@@ -110,5 +110,6 @@ module.exports = function (grunt) {
   grunt.registerTask('release', function(type) {
     grunt.task.run(["changelog", "bump" + (type ? ":" + type : "")]);
   });
+  grunt.registerTask('ci', "test:unit", "build");
   grunt.registerTask('default', "build");
 };
