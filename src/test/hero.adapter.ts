@@ -31,20 +31,6 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
     });
   }
 
-  findOne(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve, reject) => {
-      const formattedRequest = this._formatter.findOne(resource, request);
-      const hero = _.find(this.heroes, formattedRequest.criteria);
-      if (_.isUndefined(hero)) {
-        reject(new Response({error: new Error("Could not find the specified hero")}));
-      } else {
-        const response = new Response({data: hero});
-        const parsedResponse = this._parser.findOne(resource, response);
-        resolve(parsedResponse);
-      }
-    });
-  }
-
   find(resource: IResource, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const formattedRequest = this._formatter.find(resource, request);

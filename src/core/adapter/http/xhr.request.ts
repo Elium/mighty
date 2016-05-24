@@ -12,13 +12,13 @@ export type DataType = "text/plain" | "application/json";
 export type ContentType = DataType;
 
 export interface IXhrRequest extends IRequest {
-  url: string
-  method: string
+  url?: string
+  method?: string
   params?: IMap<string>
   dataType?: DataType
   contentType?: ContentType
   headers?: IMap<string>
-  
+
   merge?(request: IXhrRequest): IXhrRequest
 }
 
@@ -28,12 +28,12 @@ export class XhrRequest extends Request implements IXhrRequest {
   public params: IMap<string>;
   public dataType: DataType;
   public contentType: ContentType;
-  
+
   private _headers: IMap<string>;
-  
+
   constructor(config: IXhrRequest) {
     super(config);
-    
+
     this.url = _.get(config, "url", "");
     this.method = _.get(config, "method", "UNKNOWN");
     this.params = _.get(config, "params", <IMap<string>> {});
@@ -41,11 +41,11 @@ export class XhrRequest extends Request implements IXhrRequest {
     this.contentType = _.get(config, "contentType", <ContentType> ContentTypes.json);
     this._headers = _.get(config, "headers", <IMap<string>> {});
   }
-  
+
   public get headers(): IMap<string> {
     return _.merge(this._headers, {"Content-Type": this.contentType});
   }
-  
+
   public merge(request: IXhrRequest): IXhrRequest {
     return new XhrRequest(_.merge(this, request));
   }

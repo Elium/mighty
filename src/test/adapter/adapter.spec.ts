@@ -25,17 +25,6 @@ describe("Adapter", () => {
       });
   });
 
-  it("should find a result", (done) => {
-    const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
-    const request = new Request({criteria: criteria});
-    adapter.findOne(heroResource, request)
-      .then((response: IResponse) => {
-        const hero = response.data;
-        expect(hero).to.have.property("colors").that.contains("red");
-        done();
-      });
-  });
-
   it("should find some results", (done) => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});

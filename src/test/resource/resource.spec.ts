@@ -28,15 +28,6 @@ describe("Resource", () => {
       });
   });
 
-  it("should find a result remotely", (done) => {
-    heroResource.findOne({criteria: {name: "superman"}})
-      .then((superman: IRecord) => {
-        const zuperman = _.find(adapter.heroes, {name: "superman"});
-        checkRecord(zuperman, superman);
-        done();
-      });
-  });
-
   it("should find some results remotely", (done) => {
     heroResource
       .find((hero) => {
