@@ -1,6 +1,6 @@
-temp/
-dist/
 node_modules/
-_SpecRunner.html
+.idea/
 .DS_Store
-test-results.xml
+bower_components/
+npm-debug.log
+typings
