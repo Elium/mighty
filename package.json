@@ -17,7 +17,8 @@
     "pretest": "npm run build",
     "test": "npm run mocha",
     "test:watch": "npm run build && npm run mocha:watch",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "prepublish": "npm test"
   },
   "repository": {
     "url": "git+https://github.com/nimaen/mighty-js.git"
