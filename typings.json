@@ -1,0 +1,10 @@
+{
+  "name": "mighty-js",
+  "dependencies": {},
+  "globalDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20160317120654",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654",
+    "lodash": "registry:dt/lodash#3.10.0+20160330154726",
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+  }
+}

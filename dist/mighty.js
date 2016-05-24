@@ -1,1 +1,0 @@
-//# sourceMappingURL=mighty.js.map

@@ -1,10 +1,8 @@
 # Welcome to Mighty JS (MJS)
 
-[![Build Status](https://drone.io/github.com/nimaen/mighty-js/status.png)](https://drone.io/github.com/nimaen/mighty-js/latest)
-
 ## Preamble
 
-MJS is browser side ORM / in memory data-store, written in pure JS.
+MJS is context agnostic ORM written in pure JS.
 It has been inspired by EmberData, Backbone models, js-data and Waterline.
 
 ## Why ?
@@ -16,7 +14,7 @@ The Model part is often misunderstood : developpers usually uses plain javascrip
 
 That's where MJS is going strong, look at all the features bellow.
 
-## Main features
+## Main features (preview)
 
 ### Models and ORM
 - RESTful entities

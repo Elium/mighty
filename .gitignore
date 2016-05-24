@@ -1,4 +1,8 @@
 node_modules/
 .idea/
 .DS_Store
-.tscache/
+dist/
+build/
+lib/
+npm-debug.log
+typings
