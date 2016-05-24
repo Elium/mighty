@@ -1,7 +1,7 @@
 {
   "name": "mighty-js",
   "appName": "mighty",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "homepage": "https://github.com/nimaen/mighty-js#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic ORM",
@@ -18,7 +18,8 @@
     "test": "npm run mocha",
     "test:watch": "npm run build && npm run mocha:watch",
     "start": "npm run dev",
-    "prepublish": "npm test"
+    "copyForPublish": "cp -R src/* package.json typings.json README.md LICENSE.md typings/ lib/",
+    "bump": "npm test && npm run copyForPublish && npm publish lib/"
   },
   "repository": {
     "url": "git+https://github.com/nimaen/mighty-js.git"
