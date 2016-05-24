@@ -41,7 +41,7 @@ export class Record implements IRecord {
 
   public save(): Promise<IRecord> {
     // TODO create if no id, save otherwise
-    return this._resource.save({}, {});
+    return this._resource.save({});
   }
 
   public destroy(): Promise<IRecord> {

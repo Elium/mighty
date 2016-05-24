@@ -8,11 +8,11 @@ import {IJsonSchema} from "./schema";
 import {IResponseData} from "../adapter/response";
 
 export interface IResourceAdapter {
-  create(data: IMap<any>): Promise<IRecord>
-  findOne(criteria: IMap<any>): Promise<IRecord>
-  find(criteria: IMap<any>): Promise<ICollection<IRecord>>
-  save(criteria: IMap<any>, data: IMap<any>): Promise<IRecord>
-  destroy(criteria: IMap<any>): Promise<IRecord>
+  create(request: IRequest): Promise<IRecord>
+  findOne(request: IRequest): Promise<IRecord>
+  find(request: IRequest): Promise<ICollection<IRecord>>
+  save(request: IRequest): Promise<IRecord>
+  destroy(request: IRequest): Promise<IRecord>
 }
 
 export interface IResource extends IResourceAdapter {
@@ -41,8 +41,7 @@ export class Resource implements IResource {
   }
 
 
-  public create(data: IRequestData): Promise<IRecord> {
-    const request: IRequest = new Request({data: data});
+  public create(request: IRequest): Promise<IRecord> {
     return this._adapter
       .create(this, request)
       .then((response: IResponse) => {
@@ -51,8 +50,7 @@ export class Resource implements IResource {
   }
 
 
-  public findOne(criteria: IMap<any>): Promise<IRecord> {
-    const request: IRequest = new Request(<IRequest> {criteria: criteria});
+  public findOne(request: IRequest): Promise<IRecord> {
     return this._adapter
       .findOne(this, request)
       .then((response: IResponse) => {
@@ -61,8 +59,7 @@ export class Resource implements IResource {
   }
 
 
-  public find(criteria: any): Promise<ICollection<IRecord>> {
-    const request: IRequest = new Request({criteria: criteria});
+  public find(request: IRequest): Promise<ICollection<IRecord>> {
     return this._adapter
       .find(this, request)
       .then((response: IResponse) => {
@@ -77,8 +74,7 @@ export class Resource implements IResource {
   }
 
 
-  public save(criteria: any, data: any): Promise<IRecord> {
-    const request: IRequest = new Request({data: data, criteria: criteria});
+  public save(request: IRequest): Promise<IRecord> {
     return this._adapter
       .save(this, request)
       .then((response: IResponse) => {
@@ -87,8 +83,7 @@ export class Resource implements IResource {
   }
 
 
-  public destroy(criteria: any): Promise<IRecord> {
-    const request: IRequest = new Request(<IRequest> {criteria: criteria});
+  public destroy(request: IRequest): Promise<IRecord> {
     return this._adapter
       .destroy(this, request)
       .then((response: IResponse) => {

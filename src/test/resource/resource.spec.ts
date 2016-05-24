@@ -21,7 +21,7 @@ describe("Resource", () => {
   });
 
   it("should create a record remotely", (done) => {
-    heroResource.create(HeroesData.deadpool)
+    heroResource.create({data: HeroesData.deadpool})
       .then((deadpool: IRecord) => {
         checkRecord(HeroesData.deadpool, deadpool);
         done();
@@ -29,7 +29,7 @@ describe("Resource", () => {
   });
 
   it("should find a result remotely", (done) => {
-    heroResource.findOne({name: "superman"})
+    heroResource.findOne({criteria: {name: "superman"}})
       .then((superman: IRecord) => {
         const zuperman = _.find(adapter.heroes, {name: "superman"});
         checkRecord(zuperman, superman);
@@ -54,7 +54,10 @@ describe("Resource", () => {
     const superman: any = _.extend({}, origin);
     superman.colors = [...superman.colors, "pink"];
     heroResource
-      .save({id: superman.id}, superman)
+      .save({
+        data: superman,
+        criteria: {id: superman.id}
+      })
       .then((zuperman: IRecord) => {
         expect(zuperman).to.not.deep.equal(superman);
         expect(zuperman).to.have.property("id").that.equals(superman.id);
@@ -67,7 +70,7 @@ describe("Resource", () => {
     const numHeroes: number = adapter.heroes.length;
     const superman: any = _.find(adapter.heroes, {name: "superman"});
     heroResource
-      .destroy({id: superman.id})
+      .destroy({criteria: {id: superman.id}})
       .then(() => {
         expect(adapter.heroes.length).to.be.below(numHeroes);
         done();
