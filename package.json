@@ -1,5 +1,5 @@
 {
-  "name": "mighty-js",
+  "name": "@elium/mighty-js",
   "appName": "mighty",
   "version": "0.6.0",
   "homepage": "https://github.com/nimaen/mighty-js#readme",
@@ -18,8 +18,8 @@
     "test": "npm run mocha",
     "test:watch": "npm run build && npm run mocha:watch",
     "start": "npm run dev",
-    "copyForPublish": "cp -R src/* package.json typings.json README.md LICENSE.md typings/ lib/",
-    "bump": "npm test && npm run copyForPublish && npm publish lib/"
+    "copyForPublish": "cp -R package.json README.md LICENSE.md lib/",
+    "bump": "npm test && npm run copyForPublish && npm publish --access=public lib/"
   },
   "repository": {
     "url": "git+https://github.com/nimaen/mighty-js.git"
