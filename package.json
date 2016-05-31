@@ -2,7 +2,7 @@
   "name": "@elium/mighty-js",
   "appName": "mighty",
   "version": "0.6.0",
-  "homepage": "https://github.com/nimaen/mighty-js#readme",
+  "homepage": "https://github.com/Elium/mighty-js#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic ORM",
   "license": "MIT",
@@ -17,12 +17,10 @@
     "pretest": "npm run build",
     "test": "npm run mocha",
     "test:watch": "npm run build && npm run mocha:watch",
-    "start": "npm run dev",
-    "copyForPublish": "cp -R package.json README.md LICENSE.md lib/",
-    "bump": "npm test && npm run copyForPublish && npm publish --access=public lib/"
+    "start": "npm run dev"
   },
   "repository": {
-    "url": "git+https://github.com/nimaen/mighty-js.git"
+    "url": "git+https://github.com/Elium/mighty-js.git"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -36,6 +34,6 @@
     "mocha": "^2.4.5"
   },
   "bugs": {
-    "url": "https://github.com/nimaen/mighty-js/issues"
+    "url": "https://github.com/Elium/mighty-js/issues"
   }
 }
