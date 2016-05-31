@@ -1,5 +1,7 @@
 # Welcome to Mighty JS (MJS)
 
+[![Build Status](https://travis-ci.org/Elium/mighty-js.svg?branch=master)](https://travis-ci.org/Elium/mighty-js)
+
 ## Preamble
 
 MJS is context agnostic ORM written in pure JS.
