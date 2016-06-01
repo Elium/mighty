@@ -7,11 +7,3 @@ install:
 - npm run typings
 scripts:
 - npm test
-deploy:
-  provider: npm
-  email: account@elium.io
-  api_key:
-    secure: WYPWqx2RtpXwkTplPUnQIQqVlQINLwtzfvoKXfNzre2LFOCJZSCQQkLqbNrlPdMkHDNGOIarzKa3N/3UVhnKTi691Zc4IuamhbVjJhlIuJ2eXwzNtnG9JyIgPNFiuDjJanr4psD8QNXuRhGBYDfdaXUSGAn2ZD9TcvUGZnkwH6w=
-  on:
-    tags: true
-    branch: master
