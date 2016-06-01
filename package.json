@@ -1,7 +1,7 @@
 {
   "name": "@elium/mighty-js",
   "appName": "mighty",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "homepage": "https://github.com/Elium/mighty-js#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic ORM",
