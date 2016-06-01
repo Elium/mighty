@@ -1,5 +1,5 @@
 {
-  "name": "mighty-js",
+  "name": "@elium/mighty-js",
   "appName": "mighty",
   "version": "0.11.0",
   "homepage": "https://github.com/Elium/mighty-js#readme",
@@ -9,15 +9,16 @@
   "scripts": {
     "clean": "rimraf -Rf lib",
     "typings": "typings install",
-    "postinstall": "npm run typings",
     "build": "npm run clean && tsc -p .",
     "dev": "npm run clean && tsc -p . --watch",
-    "mocha": "mocha lib/**/test --recursive",
-    "mocha:watch": "mocha lib/**/test --recursive -w",
+    "mocha": "mocha lib/tests --recursive",
+    "mocha:watch": "mocha lib/tests --recursive -w",
     "pretest": "npm run build",
     "test": "npm run mocha",
     "test:watch": "npm run build && npm run mocha:watch",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "preversion": "npm test",
+    "postversion": "git push --follow-tags"
   },
   "repository": {
     "url": "git+https://github.com/Elium/mighty-js.git"

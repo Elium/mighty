@@ -6,4 +6,3 @@ build/
 lib/
 npm-debug.log
 typings
-./index.js*

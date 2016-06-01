@@ -16,6 +16,18 @@ The Model part is often misunderstood : developpers usually uses plain javascrip
 
 That's where MJS is going strong, look at all the features bellow.
 
+## Installation
+
+NodeJS is required. Use the folling commands to bootstrap your application :
+
+- `npm install`
+- `npm run typings`
+- `npm run build`
+
+To launch tests :
+
+- `npm test`
+
 ## Main features (preview)
 
 ### Models and ORM

@@ -13,6 +13,6 @@
   "exclude": [
     "node_modules",
     "lib",
-    "scripts"
+    "index.d.ts"
   ]
 }
