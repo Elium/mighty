@@ -1,6 +1,6 @@
-import {Parser} from "../core/adapter/parser";
-import {IResponse} from "../core/adapter/response";
-import {IResource} from "../core/resource/resource";
+import {Parser} from "../src/core/adapter/parser";
+import {IResponse} from "../src/core/adapter/response";
+import {IResource} from "../src/core/resource/resource";
 
 export class HeroParser extends Parser {
   public create(resource: IResource, response: IResponse): IResponse {

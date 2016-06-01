@@ -2,10 +2,10 @@ import * as _ from "lodash";
 import * as chai from "chai";
 import {resource as heroResource} from "../hero.resource";
 import * as HeroesData from "../hero.data";
-import {IRecord} from "../../core/resource/record/record";
+import {IRecord} from "../../src/core/resource/record/record";
 import {IHeroAdapter} from "../hero.adapter";
-import {ICollection} from "../../core/collection/collection";
-import {IMap} from "../../common/utils/map";
+import {ICollection} from "../../src/core/collection/collection";
+import {IMap} from "../../src/common/utils/map";
 
 const expect = chai.expect;
 const adapter: IHeroAdapter = <IHeroAdapter> heroResource.adapter;

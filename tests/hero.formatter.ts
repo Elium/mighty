@@ -1,6 +1,6 @@
-import {Formatter} from "../core/adapter/formatter";
-import {IRequest} from "../core/adapter/request";
-import {IResource} from "../core/resource/resource";
+import {Formatter} from "../src/core/adapter/formatter";
+import {IRequest} from "../src/core/adapter/request";
+import {IResource} from "../src/core/resource/resource";
 
 export class HeroFormatter extends Formatter {
   public create(resource: IResource, request: IRequest): IRequest {

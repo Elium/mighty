@@ -1,5 +1,5 @@
-import {IJsonSchema} from "../core/resource/schema";
-import {IMap} from "../common/utils/map";
+import {IJsonSchema} from "../src/core/resource/schema";
+import {IMap} from "../src/common/utils/map";
 
 export const schema: IJsonSchema = {
   id: "/hero",

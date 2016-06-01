@@ -1,6 +1,6 @@
 import * as chai from "chai";
-import {Store, IStore} from "../../core/store/store";
-import {IResource} from "../../core/resource/resource";
+import {Store, IStore} from "../../src/core/store/store";
+import {IResource} from "../../src/core/resource/resource";
 import {HeroAdapter} from "../hero.adapter";
 import {HeroParser} from "../hero.parser";
 import {HeroFormatter} from "../hero.formatter";

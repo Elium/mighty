@@ -1,11 +1,11 @@
 import * as _ from "lodash";
 import * as HeroesData from "./hero.data";
-import {Adapter, IAdapter} from "../core/adapter/adapter";
-import {IResponse, Response} from "../core/adapter/response";
-import {IRequest} from "../core/adapter/request";
-import {IResource} from "../core/resource/resource";
-import {IParser} from "../core/adapter/parser";
-import {IFormatter} from "../core/adapter/formatter";
+import {Adapter, IAdapter} from "../src/core/adapter/adapter";
+import {IResponse, Response} from "../src/core/adapter/response";
+import {IRequest} from "../src/core/adapter/request";
+import {IResource} from "../src/core/resource/resource";
+import {IParser} from "../src/core/adapter/parser";
+import {IFormatter} from "../src/core/adapter/formatter";
 
 export interface IHeroAdapter extends IAdapter {
   heroes: Array<any>

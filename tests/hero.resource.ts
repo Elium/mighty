@@ -1,9 +1,9 @@
-import {Resource} from "../core/resource/resource";
+import {Resource} from "../src/core/resource/resource";
 import {HeroAdapter} from "./hero.adapter";
 import {HeroParser} from "./hero.parser";
 import {HeroFormatter} from "./hero.formatter";
 import * as HeroesData from "./hero.data";
-import {IJsonSchema} from "../core/resource/schema";
+import {IJsonSchema} from "../src/core/resource/schema";
 
 const formatter = new HeroFormatter();
 const parser = new HeroParser();

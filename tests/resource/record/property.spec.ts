@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import * as chai from "chai";
 import * as HeroesData from "../../hero.data";
-import {IProperty, Property} from "../../../core/resource/record/property";
+import {IProperty, Property} from "../../../src/core/resource/record/property";
 
 const expect = chai.expect;
 
