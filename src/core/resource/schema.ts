@@ -50,7 +50,7 @@ export interface IJsonSchema {
    * this schema
    */
     'default'?: any;
-  
+
   /////////////////////////////////////////////////
   // Number Validation
   /////////////////////////////////////////////////
@@ -69,7 +69,7 @@ export interface IJsonSchema {
    * If true minimum must be < value, <= otherwise
    */
   exclusiveMinimum?: boolean;
-  
+
   /////////////////////////////////////////////////
   // String Validation
   /////////////////////////////////////////////////
@@ -80,7 +80,7 @@ export interface IJsonSchema {
    * conform to
    */
   pattern?: string;
-  
+
   /////////////////////////////////////////////////
   // Array Validation
   /////////////////////////////////////////////////
@@ -89,7 +89,7 @@ export interface IJsonSchema {
   maxItems?: number;
   minItems?: number;
   uniqueItems?: boolean;
-  
+
   /////////////////////////////////////////////////
   // Object Validation
   /////////////////////////////////////////////////
@@ -120,7 +120,7 @@ export interface IJsonSchema {
    * present.
    */
   dependencies?: {[key: string]: IJsonSchema | string[]};
-  
+
   /////////////////////////////////////////////////
   // Generic
   /////////////////////////////////////////////////
@@ -137,7 +137,7 @@ export interface IJsonSchema {
    * or an array of the acceptable types
    */
     type?: string | string[];
-  
+
   /////////////////////////////////////////////////
   // Combining Schemas
   /////////////////////////////////////////////////
@@ -148,4 +148,5 @@ export interface IJsonSchema {
    * The entity being validated must not match this schema
    */
   not?: IJsonSchema;
+  format?: "date-time" | "email" | "hostname" | "ipv4" | "ipv6" | "uri"
 }
