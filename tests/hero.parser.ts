@@ -11,6 +11,10 @@ export class HeroParser extends Parser {
     return response;
   }
 
+  public findOne(resource: IResource, response: IResponse): IResponse {
+    return response;
+  }
+
   public save(resource: IResource, response: IResponse): IResponse {
     return response;
   }

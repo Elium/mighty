@@ -4,6 +4,7 @@ import {IResource} from "../resource";
 export interface IFormatter {
   create(resource: IResource, request: IRequest): IRequest
   find(resource: IResource, request: IRequest): IRequest
+  findOne(resource: IResource, request: IRequest): IRequest
   save(resource: IResource, request: IRequest): IRequest
   destroy(resource: IResource, request: IRequest): IRequest
 }
@@ -15,6 +16,10 @@ export class Formatter implements IFormatter {
   }
 
   public find(resource: IResource, request: IRequest): IRequest {
+    return request;
+  }
+
+  public findOne(resource: IResource, request: IRequest): IRequest {
     return request;
   }
 

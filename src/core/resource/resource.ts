@@ -9,6 +9,7 @@ import {IResponseData} from "../adapter/response";
 
 export interface IResourceAdapter {
   create(request: IRequest): Promise<IRecord>
+  findOne(request: IRequest): Promise<IRecord>
   find(request: IRequest): Promise<ICollection<IRecord>>
   save(request: IRequest): Promise<IRecord>
   destroy(request: IRequest): Promise<IRecord>
@@ -43,6 +44,15 @@ export class Resource implements IResource {
   public create(request: IRequest): Promise<IRecord> {
     return this._adapter
       .create(this, request)
+      .then((response: IResponse) => {
+        return this.createRecord(response.data);
+      });
+  }
+
+
+  public findOne(request: IRequest): Promise<IRecord> {
+    return this._adapter
+      .findOne(this, request)
       .then((response: IResponse) => {
         return this.createRecord(response.data);
       });

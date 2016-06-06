@@ -11,6 +11,10 @@ export class HeroFormatter extends Formatter {
     return request;
   }
 
+  public findOne(resource: IResource, request: IRequest): IRequest {
+    return request;
+  }
+
   public save(resource: IResource, request: IRequest): IRequest {
     return request;
   }

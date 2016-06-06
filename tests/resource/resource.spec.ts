@@ -28,6 +28,18 @@ describe("Resource", () => {
       });
   });
 
+  it("should find a single result remotely", (done) => {
+    heroResource
+      .findOne((hero) => {
+        return _.findIndex(hero.colors, "red");
+      })
+      .then((hero: IRecord) => {
+        expect(hero).to.not.be.undefined;
+        expect(hero).to.have.property("colors").that.contains("red");
+        done();
+      });
+  });
+
   it("should find some results remotely", (done) => {
     heroResource
       .find((hero) => {
