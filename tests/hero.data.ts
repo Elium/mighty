@@ -9,7 +9,10 @@ export const schema: IJsonSchema = {
       type: "number",
       minimum: 1
     },
-    name: {type: "string"},
+    name: {
+      type: "string",
+      "default": "hero"
+    },
     powers: {
       type: "array",
       items: {type: "string"},
