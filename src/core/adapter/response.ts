@@ -9,19 +9,11 @@ export interface IResponse {
 }
 
 export class Response implements IResponse {
-  private _data: IResponseData;
-  private _error: Error;
+  public data: IResponseData;
+  public error: Error;
 
-  constructor(config: IResponse) {
-    this._data = _.get(config, "data", {});
-    this._error = _.get(config, "error", null);
-  }
-
-  public get data(): IResponseData {
-    return this._data;
-  }
-
-  public get error(): Error {
-    return this._error;
+  constructor(config?: IResponse) {
+    this.data = _.get(config, "data", {});
+    this.error = _.get(config, "error", null);
   }
 }
