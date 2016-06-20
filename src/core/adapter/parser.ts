@@ -1,5 +1,5 @@
 import {IResponse} from "./response";
-import {IResource} from "../resource";
+import {IResource} from "../resource/index";
 
 
 export interface IParser {

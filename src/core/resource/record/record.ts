@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import {IResource} from "../resource";
-import {IMap} from "../../../common";
-import {IRequestData} from "../../adapter/request";
+import {IMap} from "../../../common/index";
+import {IRequestData} from "../../adapter/index";
 import {IProperty, Property} from "./property";
 
 export interface IRecord {

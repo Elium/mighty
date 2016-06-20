@@ -1,5 +1,5 @@
 import {IRequest} from "./request";
-import {IResource} from "../resource";
+import {IResource} from "../resource/index";
 
 export interface IFormatter {
   create(resource: IResource, request: IRequest): IRequest

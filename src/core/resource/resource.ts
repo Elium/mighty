@@ -1,11 +1,9 @@
 import * as _ from "lodash";
-import {ICollection, Collection} from "../collection";
-import {IAdapter, IRequest, Request, IResponse} from "../adapter";
-import {IRecord, Record} from "./record";
-import {IMap} from "../../common";
-import {IRequestData} from "../adapter/request";
+import {ICollection, Collection} from "../collection/index";
+import {IAdapter, IRequest, IResponse, IRequestData, IResponseData} from "../adapter/index";
+import {IRecord, Record} from "./record/index";
+import {IMap} from "../../common/index";
 import {IJsonSchema} from "./schema";
-import {IResponseData} from "../adapter/response";
 
 export interface IResourceAdapter {
   create(request: IRequest): Promise<IRecord>

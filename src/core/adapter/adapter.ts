@@ -1,7 +1,7 @@
 import {IFormatter} from "./formatter";
 import {IParser} from "./parser";
 import {IRequest} from "./request";
-import {IResource} from "../resource";
+import {IResource} from "../resource/index";
 import {IResponse} from "./response";
 
 export interface IAdapter {

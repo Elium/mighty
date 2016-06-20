@@ -1,3 +1,3 @@
 export * from "./resource";
-export * from "./record";
+export * from "./record/index";
 export * from "./schema";
