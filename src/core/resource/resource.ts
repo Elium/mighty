@@ -4,6 +4,7 @@ import {IAdapter, IRequest, IResponse, IRequestData, IResponseData} from "../ada
 import {IRecord, Record} from "./record/index";
 import {IMap} from "../../common/index";
 import {IJsonSchema} from "./schema";
+import {IRecordConstructor} from "./record/record";
 
 export interface IResourceAdapter {
   create(request: IRequest): Promise<IRecord>
@@ -23,10 +24,12 @@ export interface IResource extends IResourceAdapter {
 export class Resource implements IResource {
   private _adapter: IAdapter;
   private _schema: IJsonSchema;
+  private _recordConstructor: IRecordConstructor;
 
-  constructor(schema: IJsonSchema, adapter?: IAdapter) {
+  constructor(schema: IJsonSchema, adapter: IAdapter, recordConstructor?: IRecordConstructor) {
     this._schema = schema;
     this._adapter = adapter;
+    this._recordConstructor = recordConstructor || Record;
   }
 
   /**
@@ -35,7 +38,7 @@ export class Resource implements IResource {
    * @returns {Record}
    */
   public createRecord(data: IRequestData): IRecord {
-    return new Record(this, data);
+    return new this._recordConstructor(this, data);
   }
 
 

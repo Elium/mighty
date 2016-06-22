@@ -6,6 +6,7 @@ import {IRecord} from "../../src/core/resource/record/record";
 import {IHeroAdapter} from "../hero.adapter";
 import {ICollection} from "../../src/core/collection/collection";
 import {IMap} from "../../src/common/utils/map";
+import {HeroRecord} from "../hero.record";
 
 const expect = chai.expect;
 const adapter: IHeroAdapter = <IHeroAdapter> heroResource.adapter;
@@ -15,6 +16,11 @@ beforeEach(() => {
 });
 
 describe("Resource", () => {
+  it("should override the default Record constructor", () => {
+    const deadpool: IRecord = heroResource.createRecord(HeroesData.deadpool);
+    expect(deadpool).to.be.instanceOf(HeroRecord);
+  });
+
   it("should create a record locally", () => {
     const deadpool: IRecord = heroResource.createRecord(HeroesData.deadpool);
     checkRecord(HeroesData.deadpool, deadpool);

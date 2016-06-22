@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import {IResource} from "../resource";
 import {IMap} from "../../../common/index";
-import {IRequestData} from "../../adapter/index";
 import {IProperty, Property} from "./property";
 
 export interface IRecord {
@@ -14,6 +13,9 @@ export interface IRecord {
   destroy(): Promise<IRecord>
 }
 
+export interface IRecordConstructor {
+  new (resource: IResource, data?: IMap<any>): IRecord
+}
 
 export class Record implements IRecord {
   private _id: string;
@@ -22,7 +24,7 @@ export class Record implements IRecord {
   public name: string;
   public properties: IMap<IProperty>;
 
-  constructor(resource: IResource, data?: IRequestData) {
+  constructor(resource: IResource, data?: IMap<any>) {
     this._resource = resource;
     if (_.isUndefined(resource)) {
       throw Error("Resource should not be empty");
@@ -30,9 +32,7 @@ export class Record implements IRecord {
 
     this._initProperties();
 
-    if (data) {
-      this._initData(<IMap<any>> data);
-    }
+    if (data) { this._initData(data); }
   }
 
   public get id(): string {
