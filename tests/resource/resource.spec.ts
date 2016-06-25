@@ -29,7 +29,7 @@ describe("Resource", () => {
 
   it("should create a record remotely", (done) => {
     heroResource.create(new Request({data: {child: HeroesData.deadpool}}))
-      .then((deadpool: IRecord) => {
+      .subscribe((deadpool: IRecord) => {
         checkRecord(HeroesData.deadpool, deadpool);
         done();
       });
@@ -38,7 +38,7 @@ describe("Resource", () => {
   it("should find a single result remotely", (done) => {
     heroResource
       .findOne(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
-      .then((hero: IRecord) => {
+      .subscribe((hero: IRecord) => {
         expect(hero).to.not.be.undefined;
         expect(hero).to.have.property("colors").that.contains("red");
         done();
@@ -48,7 +48,7 @@ describe("Resource", () => {
   it("should find some results remotely", (done) => {
     heroResource
       .find(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
-      .then((heroes: ICollection<IRecord>) => {
+      .subscribe((heroes: ICollection<IRecord>) => {
         expect(heroes).to.not.be.undefined;
         expect(heroes.length).to.be.above(0);
         done();
@@ -61,7 +61,7 @@ describe("Resource", () => {
     superman.colors = [...superman.colors, "pink"];
     heroResource
       .save(new Request({ data: {child: superman}, criteria: {id: superman.id}}))
-      .then((zuperman: IRecord) => {
+      .subscribe((zuperman: IRecord) => {
         expect(zuperman).to.not.deep.equal(superman);
         expect(zuperman).to.have.property("id").that.equals(superman.id);
         expect(zuperman).to.have.property("colors").that.have.lengthOf(origin.colors.length + 1);
@@ -74,7 +74,7 @@ describe("Resource", () => {
     const superman: any = _.find(adapter.heroes, {name: "superman"});
     heroResource
       .destroy(new Request({criteria: {id: superman.id}}))
-      .then(() => {
+      .subscribe(() => {
         expect(adapter.heroes.length).to.be.below(numHeroes);
         done();
       });

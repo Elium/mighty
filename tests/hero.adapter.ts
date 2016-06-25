@@ -4,6 +4,7 @@ import {Adapter, IAdapter} from "../src/core/adapter/adapter";
 import {IResponse, Response} from "../src/core/adapter/response";
 import {IRequest} from "../src/core/adapter/request";
 import {IResource} from "../src/core/resource/resource";
+import {Observable, Observer} from "rxjs/Rx";
 
 export interface IHeroAdapter extends IAdapter {
   heroes: Array<any>
@@ -17,50 +18,50 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
     this.heroes = _.cloneDeep(HeroesData.db);
   }
 
-  create(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
+  create(resource: IResource, request: IRequest): Observable<IResponse> {
+    return Observable.create((observer: Observer<IResponse>) => {
       const id = this._getMaxId(this.heroes);
       const data = _.merge(request.data, {id: id + 1});
       this.heroes.push(data);
-      resolve(new Response({data: data}));
+      observer.next(new Response({data: data}));
     });
   }
 
-  findOne(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
+  findOne(resource: IResource, request: IRequest): Observable<IResponse> {
+    return Observable.create((observer: Observer<IResponse>) => {
       const hero = _.find(this.heroes, request.criteria);
-      resolve(new Response({data: hero}));
+      observer.next(new Response({data: hero}));
     });
   }
 
-  find(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
+  find(resource: IResource, request: IRequest): Observable<IResponse> {
+    return Observable.create((observer: Observer<IResponse>) => {
       const heroes = _.filter(this.heroes, request.criteria);
-      resolve(new Response({data: heroes}));
+      observer.next(new Response({data: heroes}));
     });
   }
 
-  save(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve, reject) => {
+  save(resource: IResource, request: IRequest): Observable<IResponse> {
+    return Observable.create((observer: Observer<IResponse>) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
-        reject(new Response({error: new Error("There is no match for this hero criteria")}));
+        observer.error(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         this.heroes.splice(index, 1, request.data);
-        resolve(new Response({data: request.data}));
+        observer.next(new Response({data: request.data}));
       }
     });
   }
 
 
-  destroy(resource: IResource, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve, reject) => {
+  destroy(resource: IResource, request: IRequest): Observable<IResponse> {
+    return Observable.create((observer: Observer<IResponse>) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
-        reject(new Response({error: new Error("There is no match for this hero criteria")}));
+        observer.error(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         const hero = _.first(this.heroes.splice(index, 1));
-        resolve(new Response({data: hero}));
+        observer.next(new Response({data: hero}));
       }
     });
   }

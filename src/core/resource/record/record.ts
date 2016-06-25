@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import {IResource} from "../resource";
 import {IMap} from "../../../common/index";
 import {IProperty, Property} from "./property";
+import {Observable} from "rxjs/Rx";
 
 export interface IRecord {
   id: string
@@ -9,8 +10,8 @@ export interface IRecord {
   properties: IMap<IProperty>
   [prop: string]: any
 
-  save(): Promise<IRecord>
-  destroy(): Promise<IRecord>
+  save(): Observable<IRecord>
+  destroy(): Observable<IRecord>
 }
 
 export interface IRecordConstructor {
@@ -39,12 +40,12 @@ export class Record implements IRecord {
     return this._id;
   }
 
-  public save(): Promise<IRecord> {
+  public save(): Observable<IRecord> {
     // TODO create if no id, save otherwise
     return this._resource.save({});
   }
 
-  public destroy(): Promise<IRecord> {
+  public destroy(): Observable<IRecord> {
     // TODO destroy with id if possible
     return this._resource.destroy({});
   }

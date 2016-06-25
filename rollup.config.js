@@ -4,7 +4,7 @@ import buble from "rollup-plugin-buble";
 
 export default {
   entry: 'src/index.ts',
-  external: ["lodash"],
+  external: ["lodash", "rxjs/Rx"],
   plugins: [
     typescript({tsconfig: false}),
     buble()
