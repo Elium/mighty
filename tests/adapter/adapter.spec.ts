@@ -14,14 +14,15 @@ beforeEach(() => {
 });
 
 describe("Adapter", () => {
-  it("should create data entry", () => {
+  it("should create data entry", (done) => {
     const numHeroes = adapter.heroes.length;
     const request = new Request({data: HeroesData.deadpool});
-    return adapter.create(heroResource, request)
-      .then((response: IResponse) => {
+    adapter.create(heroResource, request)
+      .subscribe((response: IResponse) => {
         const hero = response.data;
         expect(hero).to.deep.equal(request.data);
         expect(adapter.heroes.length).to.equal(numHeroes + 1);
+        done();
       });
   });
 
@@ -29,7 +30,7 @@ describe("Adapter", () => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
     adapter.findOne(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const hero = response.data;
         expect(hero).to.be.an("object");
         expect(hero).to.have.property("colors").that.contains("red");
@@ -41,7 +42,7 @@ describe("Adapter", () => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
     adapter.find(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const heroes = response.data;
         expect(heroes).to.be.an("array").with.length.above(0);
         expect(heroes[0]).to.have.property("colors").that.contains("red");
@@ -58,7 +59,7 @@ describe("Adapter", () => {
       criteria: criteria
     });
     adapter.save(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const newHero = response.data;
         expect(newHero).to.not.be.undefined;
         expect(newHero).to.have.property("name").that.equal("clark kent");
@@ -72,7 +73,7 @@ describe("Adapter", () => {
     const criteria = {"name": hero.name};
     const request = new Request({criteria: criteria});
     adapter.destroy(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const deletedHero = response.data;
         expect(deletedHero).to.not.be.undefined;
         expect(deletedHero).to.have.property("name").that.equal(hero.name);
