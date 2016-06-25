@@ -3,6 +3,7 @@ import {IResource} from "../resource";
 import {IMap} from "../../../common/index";
 import {IProperty, Property} from "./property";
 import {Observable} from "rxjs/Rx";
+import {Request} from "../../adapter/request";
 
 export interface IRecord {
   id: string
@@ -41,13 +42,14 @@ export class Record implements IRecord {
   }
 
   public save(): Observable<IRecord> {
-    // TODO create if no id, save otherwise
-    return this._resource.save({});
+    return this._resource.save(new Request({data: this.properties}));
   }
 
   public destroy(): Observable<IRecord> {
-    // TODO destroy with id if possible
-    return this._resource.destroy({});
+    return this._resource.destroy(new Request({
+      criteria: {id: this._id},
+      data: this.properties
+    }));
   }
 
 
