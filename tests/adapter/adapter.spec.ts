@@ -1,10 +1,10 @@
 import * as _ from "lodash";
 import * as chai from "chai";
 import * as HeroesData from "../hero.data";
-import {resource as heroResource} from "../hero.resource";
 import {Request} from "../../src/core/adapter/request";
 import {IResponse} from "../../src/core/adapter/response";
 import {IHeroAdapter} from "../hero.adapter";
+import {resource as heroResource} from "../hero.resource";
 
 const expect = chai.expect;
 const adapter: IHeroAdapter = <IHeroAdapter> heroResource.adapter;

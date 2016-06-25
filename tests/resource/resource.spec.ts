@@ -1,12 +1,13 @@
 import * as _ from "lodash";
 import * as chai from "chai";
-import {resource as heroResource} from "../hero.resource";
 import * as HeroesData from "../hero.data";
 import {IRecord} from "../../src/core/resource/record/record";
 import {IHeroAdapter} from "../hero.adapter";
 import {ICollection} from "../../src/core/collection/collection";
 import {IMap} from "../../src/common/utils/map";
 import {HeroRecord} from "../hero.record";
+import {resource as heroResource} from "../hero.resource";
+import {Request} from "../../src/core/adapter/request";
 
 const expect = chai.expect;
 const adapter: IHeroAdapter = <IHeroAdapter> heroResource.adapter;
@@ -27,7 +28,7 @@ describe("Resource", () => {
   });
 
   it("should create a record remotely", (done) => {
-    heroResource.create({data: HeroesData.deadpool})
+    heroResource.create(new Request({data: {child: HeroesData.deadpool}}))
       .then((deadpool: IRecord) => {
         checkRecord(HeroesData.deadpool, deadpool);
         done();
@@ -36,9 +37,7 @@ describe("Resource", () => {
 
   it("should find a single result remotely", (done) => {
     heroResource
-      .findOne((hero) => {
-        return _.findIndex(hero.colors, "red");
-      })
+      .findOne(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
       .then((hero: IRecord) => {
         expect(hero).to.not.be.undefined;
         expect(hero).to.have.property("colors").that.contains("red");
@@ -48,9 +47,7 @@ describe("Resource", () => {
 
   it("should find some results remotely", (done) => {
     heroResource
-      .find((hero) => {
-        return _.findIndex(hero.colors, "red");
-      })
+      .find(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
       .then((heroes: ICollection<IRecord>) => {
         expect(heroes).to.not.be.undefined;
         expect(heroes.length).to.be.above(0);
@@ -63,10 +60,7 @@ describe("Resource", () => {
     const superman: any = _.extend({}, origin);
     superman.colors = [...superman.colors, "pink"];
     heroResource
-      .save({
-        data: superman,
-        criteria: {id: superman.id}
-      })
+      .save(new Request({ data: {child: superman}, criteria: {id: superman.id}}))
       .then((zuperman: IRecord) => {
         expect(zuperman).to.not.deep.equal(superman);
         expect(zuperman).to.have.property("id").that.equals(superman.id);
@@ -79,7 +73,7 @@ describe("Resource", () => {
     const numHeroes: number = adapter.heroes.length;
     const superman: any = _.find(adapter.heroes, {name: "superman"});
     heroResource
-      .destroy({criteria: {id: superman.id}})
+      .destroy(new Request({criteria: {id: superman.id}}))
       .then(() => {
         expect(adapter.heroes.length).to.be.below(numHeroes);
         done();

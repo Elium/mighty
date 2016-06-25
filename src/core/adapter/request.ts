@@ -20,6 +20,6 @@ export class Request implements IRequest {
   }
 
   public merge(request: IRequest): IRequest {
-    return new Request(_.merge(this, request));
+    return new Request(_.extend(this, request));
   }
 }

@@ -1,6 +1,6 @@
 import * as chai from "chai";
-import {resource} from "../../hero.resource";
 import {deadpool, schema} from "../../hero.data";
+import {resource} from "../../hero.resource";
 
 const dummyHero = resource.createRecord({});
 const deadpoolHero = resource.createRecord(deadpool);

@@ -5,6 +5,9 @@ import {IRecord, Record} from "./record/index";
 import {IMap} from "../../common/index";
 import {IJsonSchema} from "./schema";
 import {IRecordConstructor} from "./record/record";
+import {IPipe} from "../pipe/pipe";
+import {RequestPipe} from "../pipe/request.pipe";
+import {ResponsePipe} from "../pipe/response.pipe";
 
 export interface IResourceAdapter {
   create(request: IRequest): Promise<IRecord>
@@ -12,26 +15,34 @@ export interface IResourceAdapter {
   find(request: IRequest): Promise<ICollection<IRecord>>
   save(request: IRequest): Promise<IRecord>
   destroy(request: IRequest): Promise<IRecord>
+  
+  requestPipe: IPipe<IRequest>
+  responsePipe: IPipe<IResponse>
 }
 
 export interface IResource extends IResourceAdapter {
   adapter: IAdapter
   schema: IJsonSchema
-
+  
   createRecord(data: IMap<any>): IRecord
 }
 
 export class Resource implements IResource {
+  protected _responsePipe: IPipe<IResponse>;
+  protected _requestPipe: IPipe<IRequest>;
+  
   private _adapter: IAdapter;
   private _schema: IJsonSchema;
   private _recordConstructor: IRecordConstructor;
-
-  constructor(schema: IJsonSchema, adapter: IAdapter, recordConstructor?: IRecordConstructor) {
+  
+  constructor(schema: IJsonSchema, adapter: IAdapter, recordConstructor?: IRecordConstructor, requestPipe?: IPipe<IRequest>, responsePipe?: IPipe<IResponse>) {
     this._schema = schema;
     this._adapter = adapter;
     this._recordConstructor = recordConstructor || Record;
+    this._requestPipe = requestPipe || new RequestPipe();
+    this._responsePipe = responsePipe || new ResponsePipe();
   }
-
+  
   /**
    * Create a record instance.
    * @param data
@@ -40,29 +51,32 @@ export class Resource implements IResource {
   public createRecord(data: IRequestData): IRecord {
     return new this._recordConstructor(this, data);
   }
-
-
+  
+  
   public create(request: IRequest): Promise<IRecord> {
     return this._adapter
-      .create(this, request)
+      .create(this, this._requestPipe.create(request))
+      .then((response: IResponse) => this._responsePipe.create(response))
       .then((response: IResponse) => {
         return this.createRecord(response.data);
       });
   }
-
-
+  
+  
   public findOne(request: IRequest): Promise<IRecord> {
     return this._adapter
-      .findOne(this, request)
+      .findOne(this, this._requestPipe.findOne(request))
+      .then((response: IResponse) => this._responsePipe.findOne(response))
       .then((response: IResponse) => {
         return this.createRecord(response.data);
       });
   }
-
-
+  
+  
   public find(request: IRequest): Promise<ICollection<IRecord>> {
     return this._adapter
-      .find(this, request)
+      .find(this, this._requestPipe.find(request))
+      .then((response: IResponse) => this._responsePipe.findOne(response))
       .then((response: IResponse) => {
         const values: IResponseData = response.data;
         if (_.isArray(values)) {
@@ -73,30 +87,40 @@ export class Resource implements IResource {
         }
       });
   }
-
-
+  
+  
   public save(request: IRequest): Promise<IRecord> {
     return this._adapter
-      .save(this, request)
+      .save(this, this._requestPipe.save(request))
+      .then((response: IResponse) => this._responsePipe.save(response))
       .then((response: IResponse) => {
         return this.createRecord(response.data);
       });
   }
-
-
+  
+  
   public destroy(request: IRequest): Promise<IRecord> {
     return this._adapter
-      .destroy(this, request)
+      .destroy(this, this._requestPipe.destroy(request))
+      .then((response: IResponse) => this._responsePipe.destroy(response))
       .then((response: IResponse) => {
         return this.createRecord(response.data);
       });
   }
-
+  
   public get adapter(): IAdapter {
     return this._adapter;
   }
-
+  
   public get schema(): IJsonSchema {
     return this._schema;
+  }
+  
+  public get requestPipe(): IPipe<IRequest> {
+    return this._requestPipe;
+  }
+  
+  public get responsePipe(): IPipe<IResponse> {
+    return this._responsePipe;
   }
 }
