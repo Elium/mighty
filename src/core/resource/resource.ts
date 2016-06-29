@@ -8,27 +8,26 @@ import {IPipe} from "../pipe/pipe";
 import {RequestPipe} from "../pipe/request.pipe";
 import {ResponsePipe} from "../pipe/response.pipe";
 import {Observable} from "rxjs/Rx";
-import {ErrorObservable} from "rxjs/observable/ErrorObservable";
 
-export interface IResourceAdapter {
-  create(request: IRequest): Observable<IRecord>
-  findOne(request: IRequest): Observable<IRecord>
-  find(request: IRequest): Observable<Array<IRecord>>
-  save(request: IRequest): Observable<IRecord>
-  destroy(request: IRequest): Observable<IRecord>
+export interface IResourceAdapter<T extends IRecord> {
+  create(request: IRequest): Observable<T>
+  findOne(request: IRequest): Observable<T>
+  find(request: IRequest): Observable<Array<T>>
+  save(request: IRequest): Observable<T>
+  destroy(request: IRequest): Observable<T>
 
   requestPipe: IPipe<IRequest>
   responsePipe: IPipe<IResponse>
 }
 
-export interface IResource extends IResourceAdapter {
+export interface IResource<T extends IRecord> extends IResourceAdapter<T> {
   adapter: IAdapter
   schema: IJsonSchema
 
-  createRecord(data: IMap<any>): IRecord
+  createRecord(data: IMap<any>): T
 }
 
-export class Resource implements IResource {
+export class Resource<T extends IRecord> implements IResource<T> {
   protected _responsePipe: IPipe<IResponse>;
   protected _requestPipe: IPipe<IRequest>;
 
@@ -39,7 +38,7 @@ export class Resource implements IResource {
   constructor(schema: IJsonSchema, adapter: IAdapter, recordConstructor?: IRecordConstructor, requestPipe?: IPipe<IRequest>, responsePipe?: IPipe<IResponse>) {
     this._schema = schema;
     this._adapter = adapter;
-    this._recordConstructor = recordConstructor || Record;
+    this._recordConstructor = recordConstructor || <IRecordConstructor> Record;
     this._requestPipe = requestPipe || new RequestPipe();
     this._responsePipe = responsePipe || new ResponsePipe();
   }
@@ -49,12 +48,12 @@ export class Resource implements IResource {
    * @param data
    * @returns {Record}
    */
-  public createRecord(data: IRequestData): IRecord {
-    return new this._recordConstructor(this, data);
+  public createRecord(data: IRequestData): T {
+    return <T> new this._recordConstructor(this, data);
   }
 
 
-  public create(request: IRequest): Observable<IRecord> {
+  public create(request: IRequest): Observable<T> {
     return this._adapter
       .create(this, this._requestPipe.create(request))
       .map((response: IResponse) => this._responsePipe.create(response))
@@ -62,7 +61,7 @@ export class Resource implements IResource {
   }
 
 
-  public findOne(request: IRequest): Observable<IRecord> {
+  public findOne(request: IRequest): Observable<T> {
     return this._adapter
       .findOne(this, this._requestPipe.findOne(request))
       .map((response: IResponse) => this._responsePipe.findOne(response))
@@ -70,7 +69,7 @@ export class Resource implements IResource {
   }
 
 
-  public find(request: IRequest): Observable<Array<IRecord>> {
+  public find(request: IRequest): Observable<Array<T>> {
     return this._adapter
       .find(this, this._requestPipe.find(request))
       .map((response: IResponse) => this._responsePipe.findOne(response))
@@ -85,7 +84,7 @@ export class Resource implements IResource {
   }
 
 
-  public save(request: IRequest): Observable<IRecord> {
+  public save(request: IRequest): Observable<T> {
     return this._adapter
       .save(this, this._requestPipe.save(request))
       .map((response: IResponse) => this._responsePipe.save(response))
@@ -93,7 +92,7 @@ export class Resource implements IResource {
   }
 
 
-  public destroy(request: IRequest): Observable<IRecord> {
+  public destroy(request: IRequest): Observable<T> {
     return this._adapter
       .destroy(this, this._requestPipe.destroy(request))
       .map((response: IResponse) => this._responsePipe.destroy(response))

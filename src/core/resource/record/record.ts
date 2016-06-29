@@ -11,22 +11,22 @@ export interface IRecord {
   properties: IMap<IProperty>
   [prop: string]: any
 
-  save(): Observable<IRecord>
-  destroy(): Observable<IRecord>
+  save(): Observable<this>
+  destroy(): Observable<this>
 }
 
 export interface IRecordConstructor {
-  new (resource: IResource, data?: IMap<any>): IRecord
+  new (resource: IResource<any>, data?: IMap<any>): IRecord
 }
 
 export class Record implements IRecord {
   private _id: string;
-  private _resource: IResource;
+  private _resource: IResource<any>;
 
   public name: string;
   public properties: IMap<IProperty>;
 
-  constructor(resource: IResource, data?: IMap<any>) {
+  constructor(resource: IResource<any>, data?: IMap<any>) {
     this._resource = resource;
     if (_.isUndefined(resource)) {
       throw Error("Resource should not be empty");
@@ -41,11 +41,11 @@ export class Record implements IRecord {
     return this._id;
   }
 
-  public save(): Observable<IRecord> {
+  public save(): Observable<this> {
     return this._resource.save(new Request({data: this.properties}));
   }
 
-  public destroy(): Observable<IRecord> {
+  public destroy(): Observable<this> {
     return this._resource.destroy(new Request({
       criteria: {id: this._id},
       data: this.properties

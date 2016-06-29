@@ -1,4 +1,9 @@
-import {Record} from "../src/core/resource/record/record";
+import {Record, IRecord} from "../src/core/resource/record/record";
+
+export interface IHeroRecord extends IRecord {
+  powers: Array<string>
+  colors: Array<string>
+}
 
 export class HeroRecord extends Record {
 

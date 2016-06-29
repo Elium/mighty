@@ -15,13 +15,13 @@ beforeEach(() => {
 
 describe("Store", () => {
   it("should save a resource", () => {
-    const carResource: IResource = store.setResource(HeroesData.schema, adapter);
+    const carResource = store.setResource(HeroesData.schema, adapter);
     expect(carResource).not.to.be.undefined;
   });
 
   it("should get a resource", () => {
     expect(store.getResource(HeroesData.schema.title)).to.be.undefined;
-    const carResource: IResource = store.setResource(HeroesData.schema, adapter);
+    const carResource = store.setResource(HeroesData.schema, adapter);
     expect(store.getResource(HeroesData.schema.title)).to.equal(carResource);
   });
 });

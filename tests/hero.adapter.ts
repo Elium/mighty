@@ -18,7 +18,7 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
     this.heroes = _.cloneDeep(HeroesData.db);
   }
 
-  create(resource: IResource, request: IRequest): Observable<IResponse> {
+  create(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const id = this._getMaxId(this.heroes);
       const data = _.merge(request.data, {id: id + 1});
@@ -27,21 +27,21 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
     });
   }
 
-  findOne(resource: IResource, request: IRequest): Observable<IResponse> {
+  findOne(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const hero = _.find(this.heroes, request.criteria);
       observer.next(new Response({data: hero}));
     });
   }
 
-  find(resource: IResource, request: IRequest): Observable<IResponse> {
+  find(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const heroes = _.filter(this.heroes, request.criteria);
       observer.next(new Response({data: heroes}));
     });
   }
 
-  save(resource: IResource, request: IRequest): Observable<IResponse> {
+  save(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
@@ -54,7 +54,7 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
   }
 
 
-  destroy(resource: IResource, request: IRequest): Observable<IResponse> {
+  destroy(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
