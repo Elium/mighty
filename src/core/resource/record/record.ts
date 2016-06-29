@@ -58,7 +58,7 @@ export class Record implements IRecord {
    * @private
    */
   private _initProperties() {
-    var schema = this._resource.schema;
+    const schema = this._resource.schema;
     this.name = schema.title;
     this.properties = <IMap<IProperty>> {};
     _.forEach(schema.properties, (value, key) => {

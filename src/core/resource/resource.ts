@@ -1,5 +1,4 @@
 import * as _ from "lodash";
-import {ICollection, Collection} from "../collection/index";
 import {IAdapter, IRequest, IResponse, IRequestData, IResponseData} from "../adapter/index";
 import {IRecord, Record} from "./record/index";
 import {IMap} from "../../common/index";
@@ -14,7 +13,7 @@ import {ErrorObservable} from "rxjs/observable/ErrorObservable";
 export interface IResourceAdapter {
   create(request: IRequest): Observable<IRecord>
   findOne(request: IRequest): Observable<IRecord>
-  find(request: IRequest): Observable<ICollection<IRecord> | ErrorObservable>
+  find(request: IRequest): Observable<Array<IRecord>>
   save(request: IRequest): Observable<IRecord>
   destroy(request: IRequest): Observable<IRecord>
 
@@ -71,17 +70,16 @@ export class Resource implements IResource {
   }
 
 
-  public find(request: IRequest): Observable<ICollection<IRecord> | ErrorObservable> {
+  public find(request: IRequest): Observable<Array<IRecord>> {
     return this._adapter
       .find(this, this._requestPipe.find(request))
       .map((response: IResponse) => this._responsePipe.findOne(response))
       .map((response: IResponse) => {
         const values: IResponseData = response.data;
         if (_.isArray(values)) {
-          const records = _.map(values, (value) => this.createRecord(value));
-          return new Collection<IRecord>(records);
+          return _.map(values, (value) => this.createRecord(value));
         } else {
-          return Observable.throw(new Error("Expected result must be an array"));
+          return [];
         }
       });
   }

@@ -3,7 +3,6 @@ import * as chai from "chai";
 import * as HeroesData from "../hero.data";
 import {IRecord} from "../../src/core/resource/record/record";
 import {IHeroAdapter} from "../hero.adapter";
-import {ICollection} from "../../src/core/collection/collection";
 import {IMap} from "../../src/common/utils/map";
 import {HeroRecord} from "../hero.record";
 import {resource as heroResource} from "../hero.resource";
@@ -48,7 +47,7 @@ describe("Resource", () => {
   it("should find some results remotely", (done) => {
     heroResource
       .find(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
-      .subscribe((heroes: ICollection<IRecord>) => {
+      .subscribe((heroes: Array<IRecord>) => {
         expect(heroes).to.not.be.undefined;
         expect(heroes.length).to.be.above(0);
         done();
