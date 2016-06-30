@@ -13,6 +13,7 @@ export interface IRecord {
 
   save(): Observable<this>
   destroy(): Observable<this>
+  toJSON(): Object
 }
 
 export interface IRecordConstructor {
@@ -42,16 +43,25 @@ export class Record implements IRecord {
   }
 
   public save(): Observable<this> {
-    return this._resource.save(new Request({data: this.properties}));
+    const request = new Request({data: this.toJSON()});
+    if (_.isEmpty(this.id)) {
+      return this._resource.create(request);
+    }
+    return this._resource.save(request);
   }
 
   public destroy(): Observable<this> {
     return this._resource.destroy(new Request({
-      criteria: {id: this._id},
-      data: this.properties
+      criteria: {id: this.id}
     }));
   }
 
+  public toJSON() {
+    return _.reduce(this.properties, (result, property, key) => {
+      result[key] = property.value;
+      return result;
+    }, {});
+  }
 
   /**
    * Init the record properties.

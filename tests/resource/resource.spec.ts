@@ -27,7 +27,7 @@ describe("Resource", () => {
   });
 
   it("should create a record remotely", (done) => {
-    heroResource.create(new Request({data: {child: HeroesData.deadpool}}))
+    heroResource.create(new Request({data: HeroesData.deadpool}))
       .subscribe((deadpool: IRecord) => {
         checkRecord(HeroesData.deadpool, deadpool);
         done();
@@ -59,7 +59,7 @@ describe("Resource", () => {
     const superman: any = _.extend({}, origin);
     superman.colors = [...superman.colors, "pink"];
     heroResource
-      .save(new Request({ data: {child: superman}, criteria: {id: superman.id}}))
+      .save(new Request({ data: superman, criteria: {id: superman.id}}))
       .subscribe((zuperman: IRecord) => {
         expect(zuperman).to.not.deep.equal(superman);
         expect(zuperman).to.have.property("id").that.equals(superman.id);
