@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Rx";
 import {Request} from "../../adapter/request";
 
 export interface IRecord {
-  id: string
+  id: number
   name: string
   properties: IMap<IProperty>
   [prop: string]: any
@@ -21,7 +21,7 @@ export interface IRecordConstructor {
 }
 
 export class Record implements IRecord {
-  private _id: string;
+  private _id: number;
   private _resource: IResource<any>;
 
   public name: string;
@@ -38,7 +38,7 @@ export class Record implements IRecord {
     if (data) { this._initData(data); }
   }
 
-  public get id(): string {
+  public get id(): number {
     return this._id;
   }
 

@@ -1,5 +1,11 @@
 import {IJsonSchema} from "../src/core/resource/schema";
-import {IMap} from "../src/common/utils/map";
+
+export interface IHero {
+  id?: number
+  name: string
+  colors: Array<string>
+  powers: Array<string>
+}
 
 export const schema: IJsonSchema = {
   id: "/hero",
@@ -28,7 +34,7 @@ export const schema: IJsonSchema = {
   }
 };
 
-export const db: Array<IMap<any>> = [
+export const db: Array<IHero> = [
   {
     id: 1,
     name: "superman",
@@ -49,7 +55,7 @@ export const db: Array<IMap<any>> = [
   }
 ];
 
-export const deadpool: IMap<any> = {
+export const deadpool: IHero = {
   name: "Deadpool",
   powers: ["swag", "strength"],
   colors: ["red"]

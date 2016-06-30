@@ -3,10 +3,10 @@ import * as chai from "chai";
 import * as HeroesData from "../hero.data";
 import {IRecord} from "../../src/core/resource/record/record";
 import {IHeroAdapter} from "../hero.adapter";
-import {IMap} from "../../src/common/utils/map";
 import {HeroRecord} from "../hero.record";
 import {resource as heroResource} from "../hero.resource";
 import {Request} from "../../src/core/adapter/request";
+import {IHero} from "../hero.data";
 
 const expect = chai.expect;
 const adapter: IHeroAdapter = <IHeroAdapter> heroResource.adapter;
@@ -55,13 +55,12 @@ describe("Resource", () => {
   });
 
   it("should save an entry remotely", (done) => {
-    const origin: any = _.find(adapter.heroes, {name: "superman"});
-    const superman: any = _.extend({}, origin);
+    const origin: IHero = _.find(adapter.heroes, {name: "superman"});
+    const superman: IHero = <IHero> _.extend({}, origin);
     superman.colors = [...superman.colors, "pink"];
     heroResource
       .save(new Request({ data: superman, criteria: {id: superman.id}}))
       .subscribe((zuperman: IRecord) => {
-        expect(zuperman).to.not.deep.equal(superman);
         expect(zuperman).to.have.property("id").that.equals(superman.id);
         expect(zuperman).to.have.property("colors").that.have.lengthOf(origin.colors.length + 1);
         done();
@@ -70,7 +69,7 @@ describe("Resource", () => {
 
   it("should destroy an entry remotely", (done) => {
     const numHeroes: number = adapter.heroes.length;
-    const superman: any = _.find(adapter.heroes, {name: "superman"});
+    const superman: IHero = _.find(adapter.heroes, {name: "superman"});
     heroResource
       .destroy(new Request({criteria: {id: superman.id}}))
       .subscribe(() => {
@@ -80,7 +79,7 @@ describe("Resource", () => {
   });
 });
 
-function checkRecord(origin: IMap<any>, record: IRecord) {
+function checkRecord(origin: IHero, record: IRecord) {
   _.forEach(record.properties, (property) => {
     expect(property.value).to.deep.equal(origin[property.name]);
   });

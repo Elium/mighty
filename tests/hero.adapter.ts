@@ -5,23 +5,24 @@ import {IResponse, Response} from "../src/core/adapter/response";
 import {IRequest} from "../src/core/adapter/request";
 import {IResource} from "../src/core/resource/resource";
 import {Observable, Observer} from "rxjs/Rx";
+import {IHero} from "./hero.data";
 
 export interface IHeroAdapter extends IAdapter {
   heroes: Array<any>
 }
 
 export class HeroAdapter extends Adapter implements IHeroAdapter {
-  public heroes: Array<any>;
+  public heroes: Array<IHero>;
 
   constructor() {
     super();
-    this.heroes = _.cloneDeep(HeroesData.db);
+    this.heroes = <Array<IHero>> _.cloneDeep(HeroesData.db);
   }
 
   create(resource: IResource<any>, request: IRequest): Observable<IResponse> {
     return Observable.create((observer: Observer<IResponse>) => {
       const id = this._getMaxId(this.heroes);
-      const data = _.merge(request.data, {id: id + 1});
+      const data = _.merge(<IHero> request.data, {id: id + 1});
       this.heroes.push(data);
       observer.next(new Response({data: data}));
     });
@@ -47,7 +48,7 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
       if (index < 0) {
         observer.error(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
-        this.heroes.splice(index, 1, request.data);
+        this.heroes.splice(index, 1, <IHero> request.data);
         observer.next(new Response({data: request.data}));
       }
     });
@@ -66,8 +67,8 @@ export class HeroAdapter extends Adapter implements IHeroAdapter {
     });
   }
 
-  private _getMaxId(values): number {
-    const ids: Array<number> = _.map <any, number>(values, "id");
+  private _getMaxId(heroes: Array<IHero>): number {
+    const ids: Array<number> = _.map(heroes, (hero) => hero.id);
     return _.max(ids);
   }
 }
