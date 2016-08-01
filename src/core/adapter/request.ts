@@ -6,8 +6,6 @@ export type IRequestData = IMap<any> | Array<IMap<any>>;
 export interface IRequest {
   data?: IRequestData
   criteria?: IMap<any>
-
-  merge?(request: IRequest): IRequest
 }
 
 export class Request implements IRequest {
