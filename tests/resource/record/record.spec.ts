@@ -1,20 +1,34 @@
-import * as _ from "lodash";
-import * as chai from "chai";
-import {deadpool, schema, db} from "../../hero.data";
-import {resource, adapter} from "../../hero.resource";
-import {IRecord} from "../../../src/core/resource/record/record";
+import * as _ from 'lodash';
+import * as chai from 'chai';
+import {IRecord, Record} from '../../../src/core/resource/record/record';
+import {RankData} from '../../mock/rank.data';
+import {HeroData, IHeroRecord} from '../../mock/hero.data';
+import {Store} from '../../../src/core/store/store';
+import {MockAdapter} from '../../mock/mock.adapter';
 
-const dummyHero = resource.createRecord({});
-const deadpoolHero = resource.createRecord(deadpool);
-const supermanHero = resource.createRecord(db[0]);
+// Bootstrap
+const store = new Store();
+const heroData = new HeroData();
+const rankData = new RankData();
+const adapter = new MockAdapter(heroData.db, rankData.db);
+store.setup([
+  {schema: heroData.schema, adapter: adapter},
+  {schema: rankData.schema, adapter: adapter},
+]);
+const heroResource = store.getResource <IHeroRecord>(heroData.schema.identity);
+
+const dummyHero = heroResource.createRecord({});
+const deadpoolHero = heroResource.createRecord(heroData.deadpool);
+const supermanHero = heroResource.createRecord(heroData.db[0]);
 const expect = chai.expect;
 
 beforeEach(() => {
-  adapter.heroes = [...db];
+  adapter.heroes = [...heroData.db];
+  adapter.ranks = [...rankData.db];
 });
 
 describe("Record", () => {
-  it('should match schema properties', () => {
+  it('should match heroSchema properties', () => {
     expect(dummyHero).to.have.deep.property("properties.id");
     expect(dummyHero).to.have.deep.property("properties.name");
     expect(dummyHero).to.have.deep.property("properties.powers");
@@ -29,33 +43,16 @@ describe("Record", () => {
   });
 
   it('should be initialised', () => {
-    expect(deadpoolHero).to.have.property("name").that.equals(deadpool["name"]);
-    expect(deadpoolHero).to.have.property("powers").that.equals(deadpool["powers"]);
-    expect(deadpoolHero).to.have.property("colors").that.equals(deadpool["colors"]);
+    expect(deadpoolHero).to.have.property("name").that.equals(heroData.deadpool["name"]);
+    expect(deadpoolHero).to.have.property("powers").that.equals(heroData.deadpool["powers"]);
+    expect(deadpoolHero).to.have.property("colors").that.equals(heroData.deadpool["colors"]);
   });
 
   it('should handle default value', () => {
-    expect(dummyHero.name).to.equal(schema.properties["name"].default);
+    expect(dummyHero.name).to.equal(heroData.schema.properties["name"].defaultsTo);
   });
 
   it('should return only the properties values', () => {
-    expect(_.omit(deadpoolHero.toJSON(), ["id"])).to.deep.equal(_.omit(deadpool, ["id"]));
-  });
-
-  it("should save an entry remotely", (done) => {
-    supermanHero.name = "zuperman";
-    supermanHero.save()
-      .subscribe((record: IRecord) => {
-        expect(record).to.have.property("name").that.equals(supermanHero.name);
-        done();
-      });
-  });
-
-  it("should destroy an entry remotely", (done) => {
-    supermanHero.destroy()
-      .subscribe(() => {
-        expect(_.findIndex(db, {"name": supermanHero.name})).to.equal(-1);
-        done();
-      });
+    expect(_.omit(deadpoolHero.toJSON(), ["id"])).to.deep.equal(_.omit(heroData.deadpool, ["id"]));
   });
 });

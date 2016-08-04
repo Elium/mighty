@@ -1,6 +1,7 @@
 # Welcome to Mighty JS (MJS)
 
 [![Build Status](https://travis-ci.org/Elium/mighty-js.svg?branch=master)](https://travis-ci.org/Elium/mighty-js)
+[![Coverage Status](https://coveralls.io/repos/github/Elium/mighty-js/badge.svg?branch=master)](https://coveralls.io/github/Elium/mighty-js?branch=master)
 
 ## Preamble
 

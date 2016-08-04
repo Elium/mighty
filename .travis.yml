@@ -6,4 +6,4 @@ install:
 - npm install
 - npm run typings
 scripts:
-- npm test
+- npm run coverage
