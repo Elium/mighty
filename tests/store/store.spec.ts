@@ -1,11 +1,13 @@
-import * as chai from "chai";
-import * as HeroesData from "../hero.data";
-import {HeroAdapter} from "../hero.adapter";
-import {Store, IStore} from "../../src/core/store/store";
-import {IResource} from "../../src/core/resource/resource";
+import * as chai from 'chai';
+import {Store, IStore} from '../../src/core/store/store';
+import {MockAdapter} from '../mock/mock.adapter';
+import {RankData} from '../mock/rank.data';
+import {HeroData} from '../mock/hero.data';
 
 const expect = chai.expect;
-const adapter = new HeroAdapter();
+const heroData = new HeroData();
+const rankData = new RankData();
+const adapter = new MockAdapter(heroData.db, rankData.db);
 
 let store: IStore;
 
@@ -14,14 +16,28 @@ beforeEach(() => {
 });
 
 describe("Store", () => {
-  it("should save a resource", () => {
-    const carResource = store.setResource(HeroesData.schema, adapter);
+  it("should create a heroResource", () => {
+    const carResource = store.createResource(heroData.schema, adapter);
     expect(carResource).not.to.be.undefined;
   });
 
-  it("should get a resource", () => {
-    expect(store.getResource(HeroesData.schema.title)).to.be.undefined;
-    const carResource = store.setResource(HeroesData.schema, adapter);
-    expect(store.getResource(HeroesData.schema.title)).to.equal(carResource);
+  it("should set and get a heroResource", () => {
+    const carResource = store.createResource(heroData.schema, adapter);
+    store.setResource(carResource);
+    expect(store.getResource(heroData.schema.identity)).to.deep.equal(carResource);
+  });
+
+  it("should get all resource", () => {
+    store.setResource(store.createResource(heroData.schema, adapter));
+    store.setResource(store.createResource(rankData.schema, adapter));
+    expect(Object.keys(store.getAllResource())).to.have.lengthOf(2);
+  });
+
+  it("should setup a list of resources", () => {
+    store.setup([
+      {schema: heroData.schema, adapter: adapter},
+      {schema: rankData.schema, adapter: adapter}
+    ]);
+    expect(Object.keys(store.getAllResource())).to.have.lengthOf(2);
   });
 });

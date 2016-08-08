@@ -1,18 +1,12 @@
-import * as _ from "lodash";
-import {IResource} from "../resource";
-import {IMap} from "../../../common/index";
-import {IProperty, Property} from "./property";
-import {Observable} from "rxjs/Rx";
-import {Request} from "../../adapter/request";
+import {IResource} from '../resource';
+import {IMap} from '../../../common/index';
+import {IProperty, Property} from './property';
 
 export interface IRecord {
   id: number
-  name: string
   properties: IMap<IProperty>
   [prop: string]: any
-
-  save(): Observable<this>
-  destroy(): Observable<this>
+  
   toJSON(): Object
 }
 
@@ -22,19 +16,14 @@ export interface IRecordConstructor {
 
 export class Record implements IRecord {
   private _id: number;
-  private _resource: IResource<any>;
+  private _resource: IResource<this>;
 
-  public name: string;
   public properties: IMap<IProperty>;
 
-  constructor(resource: IResource<any>, data?: IMap<any>) {
+  constructor(resource: IResource<any >, data?: IMap<any>) {
     this._resource = resource;
-    if (_.isUndefined(resource)) {
-      throw Error("Resource should not be empty");
-    }
 
     this._initProperties();
-
     if (data) { this._initData(data); }
   }
 
@@ -42,37 +31,17 @@ export class Record implements IRecord {
     return this._id;
   }
 
-  public save(): Observable<this> {
-    const request = new Request({data: this.toJSON()});
-    if (_.isEmpty(this.id)) {
-      return this._resource.create(request);
-    }
-    return this._resource.save(request);
-  }
-
-  public destroy(): Observable<this> {
-    return this._resource.destroy(new Request({
-      criteria: {id: this.id}
-    }));
-  }
-
   public toJSON() {
-    return _.reduce(this.properties, (result, property, key) => {
-      result[key] = property.value;
+    return Object.keys(this.properties).reduce((result, key) => {
+      result[key] = this.properties[key].value;
       return result;
     }, {});
   }
 
-  /**
-   * Init the record properties.
-   * @private
-   */
   private _initProperties() {
-    const schema = this._resource.schema;
-    this.name = schema.title;
     this.properties = <IMap<IProperty>> {};
-    _.forEach(schema.properties, (value, key) => {
-      this.properties[key] = new Property(key, value);
+    Object.keys(this._resource.schema.properties).forEach((key) => {
+      this.properties[key] = new Property(key, this._resource.schema.properties[key]);
       Object.defineProperty(this, key, {
         configurable: false,
         enumerable: false,
@@ -82,16 +51,10 @@ export class Record implements IRecord {
     });
   }
 
-
-  /**
-   * Init the data.
-   * @param data
-   * @private
-   */
   private _initData(data: IMap<any>) {
-    _.forEach(data, (value, key) => {
+    Object.keys(data).forEach((key) => {
       if (this.properties.hasOwnProperty(key)) {
-        this.properties[key].value = value;
+        this.properties[key].value = data[key];
       }
     });
   }

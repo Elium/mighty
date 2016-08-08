@@ -1,5 +1,5 @@
-import * as _ from "lodash";
-import {IRequestData} from "./request";
+import * as _ from 'lodash';
+import {IRequestData} from './request';
 
 export type IResponseData = IRequestData;
 
