@@ -36,7 +36,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
   findOne(resource: IResource<any>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const hero = _.find(this.heroes, request.criteria);
-      resolve(new Response({data: _.cloneDeep(hero)}));
+      resolve(new Response({data: _.isEmpty(hero) ? null : _.cloneDeep(hero)}));
     })
       .then((response: IResponse) => this._populate(resource, request, response));
   }

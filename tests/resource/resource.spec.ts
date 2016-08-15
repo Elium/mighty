@@ -46,6 +46,15 @@ describe("Resource", () => {
     expect(deadpool.rankId).to.deep.equal(rank.id);
   });
 
+  it("should return an empty result", (done) => {
+    heroResource
+      .findOne(new Request({criteria: {unkownKey: 1}}))
+      .then((hero) => {
+        expect(hero).to.be.null;
+        done();
+      });
+  });
+
   it("should create a record remotely", (done) => {
     heroResource.create(new Request({data: heroData.deadpool}))
       .then((deadpool) => {
