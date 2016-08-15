@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import {IAdapter, IRequest, IResponse, IRequestData, IResponseData} from '../adapter/index';
 import {IRecord, Record} from './record/index';
 import {IMap} from '../../common/index';
@@ -62,7 +63,7 @@ export class Resource<T extends IRecord> implements IResource<T> {
     return this._adapter
       .create(this, this._requestPipe.create(request))
       .then((response: IResponse) => this._responsePipe.create(response))
-      .then((response: IResponse) => this.createRecord(response.data));
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
   }
 
 
@@ -70,7 +71,7 @@ export class Resource<T extends IRecord> implements IResource<T> {
     return this._adapter
       .findOne(this, this._requestPipe.findOne(request))
       .then((response: IResponse) => this._responsePipe.findOne(response))
-      .then((response: IResponse) => this.createRecord(response.data));
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
   }
 
 
@@ -93,7 +94,7 @@ export class Resource<T extends IRecord> implements IResource<T> {
     return this._adapter
       .save(this, this._requestPipe.save(request))
       .then((response: IResponse) => this._responsePipe.save(response))
-      .then((response: IResponse) => this.createRecord(response.data));
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
   }
 
 
@@ -101,7 +102,7 @@ export class Resource<T extends IRecord> implements IResource<T> {
     return this._adapter
       .destroy(this, this._requestPipe.destroy(request))
       .then((response: IResponse) => this._responsePipe.destroy(response))
-      .then((response: IResponse) => this.createRecord(response.data));
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
   }
 
 
