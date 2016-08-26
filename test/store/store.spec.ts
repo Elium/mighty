@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import {Store, IStore} from '../../src/store/store';
-import {MockAdapter, IMockAdapter} from '../mock/mock.adapter';
+import {MockAdapter} from '../mock/mock.adapter';
 import {HeroData, HeroRecord} from '../mock/hero.data';
 import {Resource} from '../../src/resource/resource';
 
@@ -9,10 +9,10 @@ const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
 const heroResource = new Resource("heroes", HeroRecord, adapter);
 
-let store: IStore<IMockAdapter>;
+let store: IStore;
 
 beforeEach(() => {
-  store = new Store<IMockAdapter>();
+  store = new Store();
 });
 
 describe("Store", () => {
