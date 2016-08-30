@@ -1,5 +1,6 @@
 import {IRequest} from '../adapter/request';
 import {IResponse} from '../adapter/response';
+
 export interface IPipe<I,O> {
   create(input: I): O
   findOne(input: I): O
