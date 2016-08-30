@@ -42,7 +42,7 @@ export class Resource<R extends IRecord, A extends IAdapter> implements IResourc
   }
   
   createRecord(data: IRequestData): R {
-    return _.isEmpty() ? null : new this.recordConstructor(data);
+    return _.isEmpty(data) ? null : new this.recordConstructor(data);
   }
   
   create(request: IRequest): Promise<R> {
