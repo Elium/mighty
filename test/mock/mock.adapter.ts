@@ -23,7 +23,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
       const id = this._getMaxId(this.heroes);
       const data = _.merge({}, <IHero> request.data, {id: id + 1});
       this.heroes.push(data);
-      resolve(new Response({data: data}));
+      resolve(new Response({data: {subKey: data}}));
     });
   }
   
@@ -31,7 +31,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
   findOne(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const hero = _.find(this.heroes, request.criteria);
-      resolve(new Response({data: _.isEmpty(hero) ? null : _.cloneDeep(hero)}));
+      resolve(new Response({data: {subKey: _.isEmpty(hero) ? null : _.cloneDeep(hero)}}));
     });
   }
   
@@ -39,7 +39,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
   find(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const heroes = _.filter(this.heroes, request.criteria);
-      resolve(new Response({data: _.cloneDeep(heroes)}));
+      resolve(new Response({data: {subKey: _.cloneDeep(heroes)}}));
     });
   }
   
@@ -51,7 +51,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
         reject(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         this.heroes.splice(index, 1, <IHero> request.data);
-        resolve(new Response({data: <IHero> _.cloneDeep(request.data)}));
+        resolve(new Response({data: {subKey: <IHero> _.cloneDeep(request.data)}}));
       }
     });
   }
@@ -64,7 +64,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
         reject(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         const hero = _.first(this.heroes.splice(index, 1));
-        resolve(new Response({data: hero}));
+        resolve(new Response({data: {subKey: hero}}));
       }
     });
   }

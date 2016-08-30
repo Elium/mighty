@@ -5,11 +5,15 @@ import {Request} from '../../src/adapter/request';
 import {MockAdapter} from '../mock/mock.adapter';
 import {HeroData, IHero, HeroRecord} from '../mock/hero.data';
 import {Resource} from '../../src/resource/resource';
+import {HeroRequestPipe} from '../mock/heroRequest.pipe';
+import {HeroResponsePipe} from '../mock/heroResponse.pipe';
 
 const expect = chai.expect;
 const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
-const heroResource = new Resource("heroes", HeroRecord, adapter);
+const heroRequestPipe = new HeroRequestPipe();
+const heroResponsePipe = new HeroResponsePipe();
+const heroResource = new Resource("heroes", HeroRecord, adapter, heroRequestPipe, heroResponsePipe);
 
 beforeEach(() => {
   adapter.heroes = [...heroData.db];
@@ -23,7 +27,7 @@ describe("Resource", () => {
   
   it("should return an empty result", (done) => {
     heroResource
-      .findOne(new Request({criteria: {unkownKey: 1}}))
+      .findOne(new Request({criteria: {subKey: {unkownKey: 1}}}))
       .then((hero) => {
         expect(hero).to.be.null;
         done();
@@ -31,7 +35,7 @@ describe("Resource", () => {
   });
   
   it("should create a record remotely", (done) => {
-    heroResource.create(new Request({data: heroData.deadpool}))
+    heroResource.create(new Request({data: {subKey: heroData.deadpool}}))
       .then((deadpool) => {
         checkRecordProperties(heroData.deadpool, deadpool);
         done();
@@ -40,7 +44,7 @@ describe("Resource", () => {
   
   it("should find a single result remotely", (done) => {
     heroResource
-      .findOne(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
+      .findOne(new Request({criteria: {subKey: hero => _.findIndex(hero.colors, "red")}}))
       .then((hero) => {
         expect(hero).to.not.be.undefined;
         expect(hero).to.have.property("colors").that.contains("red");
@@ -50,7 +54,7 @@ describe("Resource", () => {
   
   it("should find some results remotely", (done) => {
     heroResource
-      .find(new Request({criteria: hero => _.findIndex(hero.colors, "red")}))
+      .find(new Request({criteria: {subKey: hero => _.findIndex(hero.colors, "red")}}))
       .then((heroes) => {
         expect(heroes).to.not.be.undefined;
         expect(heroes.length).to.be.above(0);
@@ -63,7 +67,7 @@ describe("Resource", () => {
     const superman: IHero = <IHero> _.extend({}, origin);
     superman.colors = [...superman.colors, "pink"];
     heroResource
-      .save(new Request({data: superman, criteria: {id: superman.id}}))
+      .save(new Request({data: {subKey: superman}, criteria: {subKey: {id: superman.id}}}))
       .then((zuperman) => {
         expect(zuperman).to.have.property("id").that.equals(superman.id);
         expect(zuperman).to.have.property("colors").that.have.lengthOf(origin.colors.length + 1);
@@ -75,7 +79,7 @@ describe("Resource", () => {
     const numHeroes: number = adapter.heroes.length;
     const superman: IHero = _.find(adapter.heroes, {name: "superman"});
     heroResource
-      .destroy(new Request({criteria: {id: superman.id}, populate: ["rank"]}))
+      .destroy(new Request({criteria: {subKey: {id: superman.id}}}))
       .then(() => {
         expect(adapter.heroes.length).to.be.below(numHeroes);
         done();

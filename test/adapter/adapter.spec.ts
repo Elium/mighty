@@ -22,7 +22,7 @@ describe("Adapter", () => {
     const request = new Request({data: heroData.deadpool});
     adapter.create(heroResource, request)
       .then((response: IResponse) => {
-        const hero = <IHero & IRecord> response.data;
+        const hero = <IHero & IRecord> response.data["subKey"];
         expect(_.omit(hero, ["id"])).to.deep.equal(_.omit(request.data, ["id"]));
         expect(adapter.heroes.length).to.equal(numHeroes + 1);
         done();
@@ -34,7 +34,7 @@ describe("Adapter", () => {
     const request = new Request({criteria: criteria});
     adapter.findOne(heroResource, request)
       .then((response: IResponse) => {
-        const hero = <IHero & IRecord> response.data;
+        const hero = <IHero & IRecord> response.data["subKey"];
         expect(hero).to.be.an("object");
         expect(hero).to.have.property("colors").that.contains("red");
         done();
@@ -46,7 +46,7 @@ describe("Adapter", () => {
     const request = new Request({criteria: criteria});
     adapter.find(heroResource, request)
       .then((response: IResponse) => {
-        const heroes = <Array<IHero & IRecord>> response.data;
+        const heroes = <Array<IHero & IRecord>> response.data["subKey"];
         expect(heroes).to.be.an("array").with.length.above(0);
         expect(heroes[0]).to.have.property("colors").that.contains("red");
         done();
@@ -63,7 +63,7 @@ describe("Adapter", () => {
     });
     adapter.save(heroResource, request)
       .then((response: IResponse) => {
-        const newHero = response.data;
+        const newHero = response.data["subKey"];
         expect(newHero).to.not.be.undefined;
         expect(newHero).to.have.property("name").that.equal("clark kent");
         done();
@@ -77,7 +77,7 @@ describe("Adapter", () => {
     const request = new Request({criteria: criteria});
     adapter.destroy(heroResource, request)
       .then((response: IResponse) => {
-        const deletedHero = response.data;
+        const deletedHero = response.data["subKey"];
         expect(deletedHero).to.not.be.undefined;
         expect(deletedHero).to.have.property("name").that.equal(hero.name);
         expect(adapter.heroes.length + 1).to.equal(numHeroes);
