@@ -6,20 +6,12 @@ const ts = require("gulp-typescript");
 const merge = require("merge2");
 const sourcemaps = require('gulp-sourcemaps');
 
-const tsProject = ts.createProject(__dirname + "/../../tsconfig.json", {
-  sortOutput: true
-}, ts.reporter.longReporter());
+const tsProject = ts.createProject(__dirname + "/../../tsconfig.json");
 
 module.exports = () => {
-  const tsResult = gulp.src([
-      `${config.TYPINGS_DIR}/**/*.d.ts`,
-      `${config.SRC_DIR}/**/*.d.ts`,
-      `${config.SRC_DIR}/**/*.ts`,
-      `${config.TEST_DIR}/**/*.d.ts`,
-      `${config.TEST_DIR}/**/*.ts`
-    ])
+  const tsResult = tsProject.src()
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProject));
+    .pipe(tsProject(ts.reporter.longReporter()));
 
     return merge([
       tsResult.js

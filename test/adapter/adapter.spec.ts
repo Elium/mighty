@@ -10,7 +10,7 @@ import {IRecord} from '../../src/resource/record';
 const expect = chai.expect;
 const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
-const heroResource = new Resource("heroes", HeroRecord, adapter);
+const heroResource = new Resource("heroes", HeroRecord);
 
 beforeEach(() => {
   adapter.heroes = [...heroData.db];
@@ -28,7 +28,7 @@ describe("Adapter", () => {
         done();
       });
   });
-  
+
   it("should find a single result", (done) => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
@@ -40,7 +40,7 @@ describe("Adapter", () => {
         done();
       });
   });
-  
+
   it("should find some results", (done) => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
@@ -52,7 +52,7 @@ describe("Adapter", () => {
         done();
       });
   });
-  
+
   it("should save an entry", (done) => {
     const hero = _.cloneDeep(adapter.heroes[0]);
     const criteria = {"name": hero.name};
@@ -69,7 +69,7 @@ describe("Adapter", () => {
         done();
       });
   });
-  
+
   it("should destroy an entry", (done) => {
     const numHeroes = adapter.heroes.length;
     const hero = _.cloneDeep(adapter.heroes[0]);
