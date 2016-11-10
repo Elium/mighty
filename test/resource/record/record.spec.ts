@@ -8,7 +8,7 @@ import {Resource} from '../../../src/resource/resource';
 const expect = chai.expect;
 const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
-const heroResource = new Resource("heroes", HeroRecord, adapter);
+const heroResource = new Resource("heroes", HeroRecord);
 const deadpoolHero: IHero & IRecord = heroResource.createRecord(heroData.deadpool);
 
 beforeEach(() => {
@@ -21,7 +21,7 @@ describe("Record", () => {
     expect(deadpoolHero).to.have.property("powers").that.equals(heroData.deadpool["powers"]);
     expect(deadpoolHero).to.have.property("colors").that.equals(heroData.deadpool["colors"]);
   });
-  
+
   it('should export to json', () => {
     expect(_.omit(deadpoolHero.toJSON(), ["id"])).to.deep.equal(_.omit(heroData.deadpool, ["id"]));
   });

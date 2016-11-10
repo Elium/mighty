@@ -6,29 +6,23 @@ export type IRequestData = IMap<any> | Array<IMap<any>>;
 export interface IRequest {
   data?: IRequestData
   criteria?: IMap<any>
-  populate?: Array<string>;
+
+  toJSON(): IMap<any>
 }
 
 export class Request implements IRequest {
   criteria: IMap<any>;
   data: IRequestData;
-  populate: Array<string>;
 
-  constructor(config: IRequest) {
+  constructor(config: IMap<any>) {
     this.data = _.get(config, "data", {});
     this.criteria = _.get(config, "criteria", {});
-    this.populate = _.get(config, "populate", []);
   }
 
-  toJson(): IRequest {
+  toJSON(): IMap<any> {
     return {
       data: this.data,
-      criteria: this.criteria,
-      populate: this.populate
+      criteria: this.criteria
     };
-  }
-
-  merge(request: IRequest): IRequest {
-    return new Request(_.merge({}, this.toJson(), request));
   }
 }

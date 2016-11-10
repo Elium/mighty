@@ -12,13 +12,13 @@ export interface IMockAdapter extends IAdapter {
 
 export class MockAdapter extends Adapter implements IMockAdapter {
   public heroes: Array<IHero>;
-  
+
   constructor(heroes: Array<IHero>) {
     super();
     this.heroes = heroes;
   }
-  
-  create(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
+
+  create(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const id = this._getMaxId(this.heroes);
       const data = _.merge({}, <IHero> request.data, {id: id + 1});
@@ -26,25 +26,25 @@ export class MockAdapter extends Adapter implements IMockAdapter {
       resolve(new Response({data: {subKey: data}}));
     });
   }
-  
-  
-  findOne(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
+
+
+  findOne(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const hero = _.find(this.heroes, request.criteria);
       resolve(new Response({data: {subKey: _.isEmpty(hero) ? null : _.cloneDeep(hero)}}));
     });
   }
-  
-  
-  find(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
+
+
+  find(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const heroes = _.filter(this.heroes, request.criteria);
       resolve(new Response({data: {subKey: _.cloneDeep(heroes)}}));
     });
   }
-  
-  
-  save(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
+
+
+  save(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve, reject) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
@@ -55,9 +55,9 @@ export class MockAdapter extends Adapter implements IMockAdapter {
       }
     });
   }
-  
-  
-  destroy(resource: IResource<IHero & IRecord, this>, request: IRequest): Promise<IResponse> {
+
+
+  destroy(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve, reject) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
@@ -68,7 +68,7 @@ export class MockAdapter extends Adapter implements IMockAdapter {
       }
     });
   }
-  
+
   private _getMaxId(heroes: Array<IHero>): number {
     const ids: Array<number> = _.map(heroes, (hero) => hero.id);
     return _.max(ids);

@@ -7,7 +7,6 @@
   "description": "Context agnostic TS & JS ORM",
   "license": "MIT",
   "scripts": {
-    "typings": "typings install",
     "build": "gulp build",
     "dev": "gulp dev",
     "start": "npm run dev",
@@ -24,20 +23,23 @@
   },
   "main": "index.js",
   "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/es6-shim": "^0.31.32",
+    "@types/lodash": "^4.14.38",
+    "@types/mocha": "^2.2.32",
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.12",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^2.13.6",
-    "merge2": "^1.0.2",
-    "run-sequence": "^1.2.2",
-    "coveralls": "^2.11.12",
+    "gulp-typescript": "^3.1.2",
     "istanbul": "^0.4.4",
-    "mocha": "^2.4.5",
-    "chai": "^3.5.0",
-    "mocha-lcov-reporter": "^1.2.0",
     "lodash": "^4.12.0",
-    "typescript": "^1.8.2",
-    "typings": "^1.0.4"
+    "merge2": "^1.0.2",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
+    "run-sequence": "^1.2.2",
+    "typescript": "^2.0.8"
   },
   "dependencies": {
     "lodash": "^4.12.0"
