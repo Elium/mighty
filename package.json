@@ -21,7 +21,7 @@
   "repository": {
     "url": "git+https://github.com/Elium/mighty-js.git"
   },
-  "main": "lib/src/index.js",
+  "main": "index.js",
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/es6-shim": "^0.31.32",
