@@ -1,15 +1,15 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
 import {Record, IRecord} from '../../../src/resource/record';
-import {HeroData, HeroRecord, IHero} from '../../mock/hero.data';
+import {HeroData, Hero, IHero} from '../../mock/hero.data';
 import {MockAdapter} from '../../mock/mock.adapter';
 import {Resource} from '../../../src/resource/resource';
 
 const expect = chai.expect;
 const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
-const heroResource = new Resource("heroes", HeroRecord);
-const deadpoolHero: IHero & IRecord = heroResource.createRecord(heroData.deadpool);
+const heroResource = new Resource("heroes", Hero);
+const deadpoolHero: IHero = heroResource.createRecord(heroData.deadpool);
 
 beforeEach(() => {
   adapter.heroes = [...heroData.db];
@@ -23,6 +23,6 @@ describe("Record", () => {
   });
 
   it('should export to json', () => {
-    expect(_.omit(deadpoolHero.toJSON(), ["id"])).to.deep.equal(_.omit(heroData.deadpool, ["id"]));
+    expect(_.omit(deadpoolHero.toJSON(), ["id"])).to.deep.equal(_.omit(heroData.deadpool.toJSON(), ["id"]));
   });
 });

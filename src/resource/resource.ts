@@ -4,7 +4,7 @@ import {IMap} from '../utils/map';
 import {IRequest, IRequestData} from '../adapter/request';
 import {IAdapter} from '../adapter/adapter';
 import {IResponse, IResponseData} from '../adapter/response';
-import {IPipe, RequestPipe, ResponsePipe} from './pipe';
+import {hookable, IHookable, IHook} from '../utils/hook';
 
 export interface IResourceAdapter<R extends IRecord> {
   create(request: IRequest, adapter: IAdapter): Promise<R>
@@ -17,47 +17,47 @@ export interface IResourceAdapter<R extends IRecord> {
 export interface IResource<R extends IRecord> extends IResourceAdapter<R> {
   identity: string
   recordConstructor: IRecordConstructor<R>;
-  requestPipe: IPipe<IRequest, IRequest>;
-  responsePipe: IPipe<IResponse, IResponse>;
 
   createRecord(data: IMap<any>): R
 }
 
-export class Resource<R extends IRecord> implements IResource<R> {
+@hookable
+export class Resource<R extends IRecord> implements IResource<R>, IHookable {
   identity: string;
   recordConstructor: IRecordConstructor<R>;
-  requestPipe: IPipe<IRequest, IRequest>;
-  responsePipe: IPipe<IResponse, IResponse>;
 
   constructor(identity: string,
-              recordConstructor: IRecordConstructor<R>,
-              requestPipe?: IPipe<IRequest, IRequest>,
-              responsePipe?: IPipe<IResponse, IResponse>) {
+              recordConstructor: IRecordConstructor<R>) {
     this.identity = identity;
     this.recordConstructor = recordConstructor;
-    this.requestPipe = requestPipe || new RequestPipe();
-    this.responsePipe = responsePipe || new ResponsePipe();
   }
+
+  addHook: (hook: IHook) => void;
+  removeHook: (name: string) => void;
+  applyHook: <I, O>(name: string, input: I) => Promise<O>;
 
   createRecord(data: IRequestData): R {
     return new this.recordConstructor(data);
   }
 
   create(request: IRequest, adapter: IAdapter): Promise<R> {
-    return adapter.create(this, this.requestPipe.create(request))
-      .then((response: IResponse) => this.responsePipe.create(response))
-      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
+    return this.applyHook('beforeCreate', request)
+      .then(newRequest => adapter.create(this, newRequest))
+      .then(response => this.applyHook('afterCreate', response))
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
   findOne(request: IRequest, adapter: IAdapter): Promise<R> {
-    return adapter.findOne(this, this.requestPipe.findOne(request))
-      .then((response: IResponse) => this.responsePipe.findOne(response))
-      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
+    return this.applyHook('beforeFindOne', request)
+      .then(newRequest => adapter.findOne(this, newRequest))
+      .then(response => this.applyHook('afterFindOne', response))
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
   find(request: IRequest, adapter: IAdapter): Promise<Array<R>> {
-    return adapter.find(this, this.requestPipe.find(request))
-      .then((response: IResponse) => this.responsePipe.find(response))
+    return this.applyHook('beforeFind', request)
+      .then(newRequest => adapter.find(this, newRequest))
+      .then(response => this.applyHook('afterFind', response))
       .then((response: IResponse) => {
         const values: IResponseData = response.data;
         if (Array.isArray(values)) {
@@ -69,14 +69,16 @@ export class Resource<R extends IRecord> implements IResource<R> {
   }
 
   save(request: IRequest, adapter: IAdapter): Promise<R> {
-    return adapter.save(this, this.requestPipe.save(request))
-      .then((response: IResponse) => this.responsePipe.save(response))
-      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
+    return this.applyHook('beforeSave', request)
+      .then(newRequest => adapter.save(this, newRequest))
+      .then(response => this.applyHook('beforeSave', response))
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
   destroy(request: IRequest, adapter: IAdapter): Promise<R> {
-    return adapter.destroy(this, this.requestPipe.destroy(request))
-      .then((response: IResponse) => this.responsePipe.destroy(response))
-      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data));
+    return this.applyHook('beforeSave', request)
+      .then(newRequest => adapter.destroy(this, newRequest))
+      .then(response => this.applyHook('beforeSave', response))
+      .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 }

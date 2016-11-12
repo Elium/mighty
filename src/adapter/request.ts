@@ -6,8 +6,6 @@ export type IRequestData = IMap<any> | Array<IMap<any>>;
 export interface IRequest {
   data?: IRequestData
   criteria?: IMap<any>
-
-  toJSON(): IMap<any>
 }
 
 export class Request implements IRequest {
@@ -17,12 +15,5 @@ export class Request implements IRequest {
   constructor(config: IMap<any>) {
     this.data = _.get(config, "data", {});
     this.criteria = _.get(config, "criteria", {});
-  }
-
-  toJSON(): IMap<any> {
-    return {
-      data: this.data,
-      criteria: this.criteria
-    };
   }
 }

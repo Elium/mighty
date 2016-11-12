@@ -18,53 +18,53 @@ export class MockAdapter extends Adapter implements IMockAdapter {
     this.heroes = heroes;
   }
 
-  create(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
+  create(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const id = this._getMaxId(this.heroes);
       const data = _.merge({}, <IHero> request.data, {id: id + 1});
       this.heroes.push(data);
-      resolve(new Response({data: {subKey: data}}));
+      resolve(new Response({data: data}));
     });
   }
 
 
-  findOne(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
+  findOne(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const hero = _.find(this.heroes, request.criteria);
-      resolve(new Response({data: {subKey: _.isEmpty(hero) ? null : _.cloneDeep(hero)}}));
+      resolve(new Response({data: _.isEmpty(hero) ? null : _.cloneDeep(hero)}));
     });
   }
 
 
-  find(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
+  find(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve) => {
       const heroes = _.filter(this.heroes, request.criteria);
-      resolve(new Response({data: {subKey: _.cloneDeep(heroes)}}));
+      resolve(new Response({data: _.cloneDeep(heroes)}));
     });
   }
 
 
-  save(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
+  save(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve, reject) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
         reject(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         this.heroes.splice(index, 1, <IHero> request.data);
-        resolve(new Response({data: {subKey: <IHero> _.cloneDeep(request.data)}}));
+        resolve(new Response({data: <IHero> _.cloneDeep(request.data)}));
       }
     });
   }
 
 
-  destroy(resource: IResource<IHero & IRecord>, request: IRequest): Promise<IResponse> {
+  destroy(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
     return new Promise((resolve, reject) => {
       const index = _.findIndex(this.heroes, request.criteria);
       if (index < 0) {
         reject(new Response({error: new Error("There is no match for this hero criteria")}));
       } else {
         const hero = _.first(this.heroes.splice(index, 1));
-        resolve(new Response({data: {subKey: hero}}));
+        resolve(new Response({data: hero}));
       }
     });
   }
