@@ -76,9 +76,9 @@ export class Resource<R extends IRecord> implements IResource<R>, IHookable {
   }
 
   destroy(adapter: IAdapter, request: IRequest): Promise<R> {
-    return this.applyHook('beforeSave', request)
+    return this.applyHook('beforeDestroy', request)
       .then(newRequest => adapter.destroy(this, newRequest))
-      .then(response => this.applyHook('beforeSave', response))
+      .then(response => this.applyHook('beforeDestroy', response))
       .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 }
