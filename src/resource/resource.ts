@@ -7,11 +7,11 @@ import {IResponse, IResponseData} from '../adapter/response';
 import {hookable, IHookable, IHook} from '../utils/hook';
 
 export interface IResourceAdapter<R extends IRecord> {
-  create(request: IRequest, adapter: IAdapter): Promise<R>
-  findOne(request: IRequest, adapter: IAdapter): Promise<R>
-  find(request: IRequest, adapter: IAdapter): Promise<Array<R>>
-  save(request: IRequest, adapter: IAdapter): Promise<R>
-  destroy(request: IRequest, adapter: IAdapter): Promise<R>
+  create(adapter: IAdapter, request: IRequest): Promise<R>
+  findOne(adapter: IAdapter, request: IRequest): Promise<R>
+  find(adapter: IAdapter, request: IRequest): Promise<Array<R>>
+  save(adapter: IAdapter, request: IRequest): Promise<R>
+  destroy(adapter: IAdapter, request: IRequest): Promise<R>
 }
 
 export interface IResource<R extends IRecord> extends IResourceAdapter<R> {
@@ -40,21 +40,21 @@ export class Resource<R extends IRecord> implements IResource<R>, IHookable {
     return new this.recordConstructor(data);
   }
 
-  create(request: IRequest, adapter: IAdapter): Promise<R> {
+  create(adapter: IAdapter, request: IRequest): Promise<R> {
     return this.applyHook('beforeCreate', request)
       .then(newRequest => adapter.create(this, newRequest))
       .then(response => this.applyHook('afterCreate', response))
       .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
-  findOne(request: IRequest, adapter: IAdapter): Promise<R> {
+  findOne(adapter: IAdapter, request: IRequest): Promise<R> {
     return this.applyHook('beforeFindOne', request)
       .then(newRequest => adapter.findOne(this, newRequest))
       .then(response => this.applyHook('afterFindOne', response))
       .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
-  find(request: IRequest, adapter: IAdapter): Promise<Array<R>> {
+  find(adapter: IAdapter, request: IRequest): Promise<Array<R>> {
     return this.applyHook('beforeFind', request)
       .then(newRequest => adapter.find(this, newRequest))
       .then(response => this.applyHook('afterFind', response))
@@ -68,14 +68,14 @@ export class Resource<R extends IRecord> implements IResource<R>, IHookable {
       });
   }
 
-  save(request: IRequest, adapter: IAdapter): Promise<R> {
+  save(adapter: IAdapter, request: IRequest): Promise<R> {
     return this.applyHook('beforeSave', request)
       .then(newRequest => adapter.save(this, newRequest))
       .then(response => this.applyHook('beforeSave', response))
       .then((response: IResponse) => _.isEmpty(response.data) ? null : this.createRecord(response.data))
   }
 
-  destroy(request: IRequest, adapter: IAdapter): Promise<R> {
+  destroy(adapter: IAdapter, request: IRequest): Promise<R> {
     return this.applyHook('beforeSave', request)
       .then(newRequest => adapter.destroy(this, newRequest))
       .then(response => this.applyHook('beforeSave', response))
