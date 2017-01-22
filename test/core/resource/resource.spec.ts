@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
-import {MockAdapter} from '../mock/mock.adapter';
-import {HeroData, IHero, Hero} from '../mock/hero.data';
-import {Resource} from '../../src/resource/resource';
+import {HeroData, Hero, IHero} from '../../mock/hero.data';
+import {MockAdapter} from '../../mock/mock.adapter';
+import {Resource} from '../../../src/core/resource/resource';
 
 const expect = chai.expect;
 const heroData = new HeroData();
@@ -29,7 +29,7 @@ describe("Resource", () => {
   it("should return an empty result", (done) => {
     heroResource
       .findOne(adapter, {criteria: {unkownKey: 1}})
-      .then((hero) => {
+      .subscribe((hero) => {
         expect(hero).to.be.null;
         done();
       });
@@ -37,7 +37,7 @@ describe("Resource", () => {
 
   it("should create a record remotely", (done) => {
     heroResource.create(adapter, {data: heroData.deadpool})
-      .then((deadpool) => {
+      .subscribe((deadpool) => {
         checkRecordProperties(heroData.deadpool, deadpool);
         done();
       });
@@ -46,7 +46,7 @@ describe("Resource", () => {
   it("should find a single result remotely", (done) => {
     heroResource
       .findOne(adapter, {criteria: hero => _.findIndex(hero.colors, "red")})
-      .then((hero) => {
+      .subscribe((hero) => {
         expect(hero).to.not.be.undefined;
         expect(hero).to.have.property("colors").that.contains("red");
         done();
@@ -56,7 +56,7 @@ describe("Resource", () => {
   it("should find some results remotely", (done) => {
     heroResource
       .find(adapter, {criteria: hero => _.findIndex(hero.colors, "red")})
-      .then((heroes) => {
+      .subscribe((heroes) => {
         expect(heroes).to.not.be.undefined;
         expect(heroes.length).to.be.above(0);
         done();
@@ -69,7 +69,7 @@ describe("Resource", () => {
     superman.colors = [...superman.colors, "pink"];
     heroResource
       .save(adapter, {data: superman, criteria: {id: superman.id}})
-      .then((zuperman) => {
+      .subscribe((zuperman) => {
         expect(zuperman).to.have.property("id").that.equals(superman.id);
         expect(zuperman).to.have.property("colors").that.have.lengthOf(origin.colors.length + 1);
         done();
@@ -81,7 +81,7 @@ describe("Resource", () => {
     const superman: IHero = _.find(adapter.heroes, {name: "superman"});
     heroResource
       .destroy(adapter, {criteria: {id: superman.id}})
-      .then(() => {
+      .subscribe(() => {
         expect(adapter.heroes.length).to.be.below(numHeroes);
         done();
       });

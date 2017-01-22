@@ -1,16 +1,19 @@
 import * as _ from 'lodash';
 import {applyMixins} from './mixins';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
 
 export interface IHook {
   name: string
-  map: <I, O> (input: I) => Promise<I | O>
+  map: <I, O> (input: I) => Observable<I | O>
 }
 
 export class Hook implements IHook {
   name: string;
-  map: <I, O> (input: I) => Promise<O>;
+  map: <I, O> (input: I) => Observable<O>;
 
-  constructor(name: string, action: <I, O> (input: I) => Promise<I | O>) {
+  constructor(name: string, action: <I, O> (input: I) => Observable<I | O>) {
     this.name = name;
     this.map = action;
   }
@@ -19,7 +22,7 @@ export class Hook implements IHook {
 export interface IHookable {
   addHook(hook: IHook)
   removeHook(name: string)
-  applyHook<I, O>(name: string, input: I): Promise<I | O>
+  applyHook<I, O>(name: string, input: I): Observable<I | O>
 }
 
 export function hookable(constructor: Function) {
@@ -42,10 +45,10 @@ export class Hookable implements IHookable {
     _.remove(this.hooks, {name: name});
   }
 
-  applyHook<I, O>(name: string, input: I): Promise<I | O> {
+  applyHook<I, O>(name: string, input: I): Observable<I | O> {
     const hook = _.find(this.hooks, {name: name});
     if(_.isEmpty(hook)|| !_.isFunction(hook.map)) {
-      return Promise.resolve(input);
+      return Observable.of(input);
     } else {
       return hook.map(input);
     }

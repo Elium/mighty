@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 import {IRank} from './rank.data';
-import {IRecord, Record} from '../../src/resource/record';
-import {IMap} from '../../src/utils/map';
+import {IRecord, Record} from '../../src/core/resource/record';
+import {IMap} from '../../src/core/utils/map';
+import {Resource} from '../../src/core/resource/resource';
+
 
 export interface IHero extends IRecord {
   id: number
@@ -37,6 +39,12 @@ export class Hero extends Record implements IHero {
     this.colors = data["colors"] || [];
     this.powers = data["powers"] || [];
     this.rankId = data["rankId"] || null;
+  }
+}
+
+export class HeroResource extends Resource<IHero> {
+  constructor() {
+    super('hero', Hero);
   }
 }
 

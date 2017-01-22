@@ -1,11 +1,10 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
-import {Request} from '../../src/adapter/request';
-import {IResponse} from '../../src/adapter/response';
-import {MockAdapter} from '../mock/mock.adapter';
-import {HeroData, Hero, IHero} from '../mock/hero.data';
-import {Resource} from '../../src/resource/resource';
-import {IRecord} from '../../src/resource/record';
+import {HeroData, Hero, IHero} from '../../mock/hero.data';
+import {MockAdapter} from '../../mock/mock.adapter';
+import {Resource} from '../../../src/core/resource/resource';
+import {Request} from '../../../src/core/adapter/request';
+import {IResponse} from '../../../src/core/adapter/response';
 
 const expect = chai.expect;
 const heroData = new HeroData();
@@ -21,7 +20,7 @@ describe("Adapter", () => {
     const numHeroes = adapter.heroes.length;
     const request = new Request({data: heroData.deadpool});
     adapter.create(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const hero = <IHero> response.data;
         expect(_.omit(hero, ["id"])).to.deep.equal(_.omit(request.data, ["id"]));
         expect(adapter.heroes.length).to.equal(numHeroes + 1);
@@ -33,7 +32,7 @@ describe("Adapter", () => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
     adapter.findOne(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const hero = <IHero> response.data;
         expect(hero).to.be.an("object");
         expect(hero).to.have.property("colors").that.contains("red");
@@ -45,7 +44,7 @@ describe("Adapter", () => {
     const criteria = (hero) => _.indexOf(hero.colors, "red") > -1;
     const request = new Request({criteria: criteria});
     adapter.find(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const heroes = <Array<IHero>> response.data;
         expect(heroes).to.be.an("array").with.length.above(0);
         expect(heroes[0]).to.have.property("colors").that.contains("red");
@@ -62,7 +61,7 @@ describe("Adapter", () => {
       criteria: criteria
     });
     adapter.save(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const newHero = response.data;
         expect(newHero).to.not.be.undefined;
         expect(newHero).to.have.property("name").that.equal("clark kent");
@@ -76,7 +75,7 @@ describe("Adapter", () => {
     const criteria = {"name": hero.name};
     const request = new Request({criteria: criteria});
     adapter.destroy(heroResource, request)
-      .then((response: IResponse) => {
+      .subscribe((response: IResponse) => {
         const deletedHero = response.data;
         expect(deletedHero).to.not.be.undefined;
         expect(deletedHero).to.have.property("name").that.equal(hero.name);

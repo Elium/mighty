@@ -1,14 +1,14 @@
 {
-  "name": "@elium/mighty-js",
+  "name": "@elium/mighty",
   "appName": "mighty",
-  "version": "4.2.2",
-  "homepage": "https://github.com/Elium/mighty-js#readme",
+  "version": "4.2.2-rxjs.0",
+  "homepage": "https://github.com/Elium/mighty#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic TS & JS ORM",
   "license": "MIT",
   "scripts": {
-    "build": "gulp build",
-    "dev": "gulp dev",
+    "build": "tsc -p .",
+    "dev": "tsc -w -p .",
     "start": "npm run dev",
     "pretest": "npm run build",
     "test": "mocha lib/test --recursive -R spec",
@@ -16,36 +16,33 @@
     "coverage:ci": "istanbul cover _mocha --report lcovonly -- -R spec --recursive lib/test && cat ./coverage/lcov.info | coveralls",
     "test:watch": "npm run build && npm run mocha:watch",
     "preversion": "npm test",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "deploy": "cp package.json LICENSE.md ./lib/ && npm publish --access=public"
   },
   "repository": {
-    "url": "git+https://github.com/Elium/mighty-js.git"
+    "url": "git+https://github.com/Elium/mighty.git"
   },
   "main": "index.js",
   "devDependencies": {
     "@types/chai": "^3.4.34",
-    "@types/core-js": "^0.9.34",
-    "@types/lodash": "^4.14.38",
-    "@types/mocha": "^2.2.32",
+    "@types/core-js": "^0.9.35",
+    "@types/lodash": "^4.14.50",
+    "@types/mocha": "^2.2.38",
+    "@types/node": "^7.0.1",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
     "del": "^2.2.1",
-    "gulp": "^3.9.1",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^3.1.2",
+    "hapi": "^16.1.0",
     "istanbul": "^0.4.4",
-    "lodash": "^4.12.0",
-    "merge2": "^1.0.2",
-    "mocha": "^2.4.5",
+    "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0",
-    "run-sequence": "^1.2.2",
-    "typescript": "^2.0.8"
+    "typescript": "^2.1.5"
   },
   "dependencies": {
-    "core-js": "^2.4.1",
-    "lodash": "^4.12.0"
+    "lodash": "^4.17.4",
+    "rxjs": "^5.0.3"
   },
   "bugs": {
-    "url": "https://github.com/Elium/mighty-js/issues"
+    "url": "https://github.com/Elium/mighty/issues"
   }
 }

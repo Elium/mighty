@@ -1,15 +1,14 @@
 import * as _ from 'lodash';
 import * as chai from 'chai';
-import {Record, IRecord} from '../../../src/resource/record';
-import {HeroData, Hero, IHero} from '../../mock/hero.data';
-import {MockAdapter} from '../../mock/mock.adapter';
-import {Resource} from '../../../src/resource/resource';
+import {HeroData, Hero} from '../../../mock/hero.data';
+import {MockAdapter} from '../../../mock/mock.adapter';
+import {Resource} from '../../../../src/core/resource/resource';
 
 const expect = chai.expect;
 const heroData = new HeroData();
 const adapter = new MockAdapter(heroData.db);
 const heroResource = new Resource("heroes", Hero);
-const deadpoolHero: IHero = heroResource.createRecord(heroData.deadpool);
+const deadpoolHero = heroResource.createRecord(heroData.deadpool);
 
 beforeEach(() => {
   adapter.heroes = [...heroData.db];
