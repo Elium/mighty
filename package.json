@@ -1,7 +1,7 @@
 {
   "name": "@elium/mighty",
   "appName": "mighty",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "homepage": "https://github.com/Elium/mighty#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic TS & JS ORM",
@@ -17,7 +17,7 @@
     "test:watch": "npm run build && npm run mocha:watch",
     "preversion": "npm test",
     "postversion": "git push --follow-tags",
-    "deploy": "cp package.json LICENSE.md ./lib/ && npm publish --access=public"
+    "deploy": "cp package.json LICENSE.md ./lib/src && npm publish --access=public lib/src"
   },
   "repository": {
     "url": "git+https://github.com/Elium/mighty.git"
