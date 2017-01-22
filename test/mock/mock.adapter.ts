@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import {IHero} from './hero.data';
-import {Adapter, IAdapter} from '../../src/adapter/adapter';
-import {IResponse, Response} from '../../src/adapter/response';
-import {IRequest} from '../../src/adapter/request';
-import {IResource} from '../../src/resource/resource';
-import {IRecord} from '../../src/resource/record';
+import {IAdapter, Adapter} from '../../src/core/adapter/adapter';
+import {IResource} from '../../src/core/resource/resource';
+import {IRequest} from '../../src/core/adapter/request';
+import {IResponse, Response} from '../../src/core/adapter/response';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/observable/of';
 
 export interface IMockAdapter extends IAdapter {
   heroes: Array<IHero>
@@ -18,55 +19,45 @@ export class MockAdapter extends Adapter implements IMockAdapter {
     this.heroes = heroes;
   }
 
-  create(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
-      const id = this._getMaxId(this.heroes);
-      const data = _.merge({}, <IHero> request.data, {id: id + 1});
-      this.heroes.push(data);
-      resolve(new Response({data: data}));
-    });
+  create(resource: IResource<IHero>, request: IRequest): Observable<IResponse> {
+    const id = this._getMaxId(this.heroes);
+    const data = _.merge({}, <IHero> request.data, {id: id + 1});
+    this.heroes.push(data);
+    return Observable.of(new Response({data: data}));
   }
 
 
-  findOne(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
-      const hero = _.find(this.heroes, request.criteria);
-      resolve(new Response({data: _.isEmpty(hero) ? null : _.cloneDeep(hero)}));
-    });
+  findOne(resource: IResource<IHero>, request: IRequest): Observable<IResponse> {
+    const hero = _.find(this.heroes, request.criteria);
+    return Observable.of(new Response({data: _.isEmpty(hero) ? null : _.cloneDeep(hero)}));
   }
 
 
-  find(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve) => {
-      const heroes = _.filter(this.heroes, request.criteria);
-      resolve(new Response({data: _.cloneDeep(heroes)}));
-    });
+  find(resource: IResource<IHero>, request: IRequest): Observable<IResponse> {
+    const heroes = _.filter(this.heroes, request.criteria);
+    return Observable.of(new Response({data: _.cloneDeep(heroes)}));
   }
 
 
-  save(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve, reject) => {
-      const index = _.findIndex(this.heroes, request.criteria);
-      if (index < 0) {
-        reject(new Response({error: new Error("There is no match for this hero criteria")}));
-      } else {
-        this.heroes.splice(index, 1, <IHero> request.data);
-        resolve(new Response({data: <IHero> _.cloneDeep(request.data)}));
-      }
-    });
+  save(resource: IResource<IHero>, request: IRequest): Observable<IResponse> {
+    const index = _.findIndex(this.heroes, request.criteria);
+    if (index < 0) {
+      return Observable.throw(new Response({error: new Error("There is no match for this hero criteria")}));
+    } else {
+      this.heroes.splice(index, 1, <IHero> request.data);
+      return Observable.of(new Response({data: <IHero> _.cloneDeep(request.data)}));
+    }
   }
 
 
-  destroy(resource: IResource<IHero>, request: IRequest): Promise<IResponse> {
-    return new Promise((resolve, reject) => {
-      const index = _.findIndex(this.heroes, request.criteria);
-      if (index < 0) {
-        reject(new Response({error: new Error("There is no match for this hero criteria")}));
-      } else {
-        const hero = _.first(this.heroes.splice(index, 1));
-        resolve(new Response({data: hero}));
-      }
-    });
+  destroy(resource: IResource<IHero>, request: IRequest): Observable<IResponse> {
+    const index = _.findIndex(this.heroes, request.criteria);
+    if (index < 0) {
+      return Observable.throw(new Response({error: new Error("There is no match for this hero criteria")}));
+    } else {
+      const hero = _.first(this.heroes.splice(index, 1));
+      return Observable.of(new Response({data: hero}));
+    }
   }
 
   private _getMaxId(heroes: Array<IHero>): number {

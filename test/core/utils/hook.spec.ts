@@ -1,5 +1,7 @@
 import * as chai from 'chai';
-import {Hook, Hookable} from '../../src/utils/hook';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/observable/of';
+import {Hookable, Hook} from '../../../src/core/utils/hook';
 
 const expect = chai.expect;
 let hookable: Hookable;
@@ -34,9 +36,9 @@ describe('Hook', () => {
   describe('apply', () => {
     it('should apply a hook', (done) => {
       hookable = new Hookable();
-      hookable.addHook(new Hook('test', (input: number) => Promise.resolve(input + 1)));
+      hookable.addHook(new Hook('test', (input: number) => Observable.of(input + 1)));
       hookable.applyHook('test', 1)
-        .then(output => {
+        .subscribe(output => {
           expect(output).to.equal(2);
           done();
         });
@@ -45,7 +47,7 @@ describe('Hook', () => {
     it('should return the input if no hook exists', (done) => {
       hookable = new Hookable();
       hookable.applyHook('test', 1)
-        .then(output => {
+        .subscribe(output => {
           expect(output).to.equal(1);
           done();
         });
@@ -55,7 +57,7 @@ describe('Hook', () => {
       hookable = new Hookable();
       hookable.addHook(new Hook('test', null));
       hookable.applyHook('test', 1)
-        .then(output => {
+        .subscribe(output => {
           expect(output).to.equal(1);
           done();
         });

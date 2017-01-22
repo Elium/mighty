@@ -1,7 +1,7 @@
 # Welcome to Mighty JS (MJS)
 
-[![Build Status](https://travis-ci.org/Elium/mighty-js.svg?branch=master)](https://travis-ci.org/Elium/mighty-js)
-[![Coverage Status](https://coveralls.io/repos/github/Elium/mighty-js/badge.svg?branch=master)](https://coveralls.io/github/Elium/mighty-js?branch=master)
+[![Build Status](https://travis-ci.org/Elium/mighty.svg?branch=master)](https://travis-ci.org/Elium/mighty)
+[![Coverage Status](https://coveralls.io/repos/github/Elium/mighty/badge.svg?branch=master)](https://coveralls.io/github/Elium/mighty?branch=master)
 
 ## Preamble
 
@@ -22,7 +22,6 @@ That's where MJS is going strong, look at all the features bellow.
 NodeJS is required. Use the folling commands to bootstrap your application :
 
 - `npm install`
-- `npm run typings`
 - `npm run build`
 
 To launch tests :

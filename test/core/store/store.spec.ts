@@ -1,7 +1,7 @@
 import * as chai from 'chai';
-import {Store, IStore} from '../../src/store/store';
-import {HeroData, Hero} from '../mock/hero.data';
-import {Resource} from '../../src/resource/resource';
+import {Hero} from '../../mock/hero.data';
+import {Resource} from '../../../src/core/resource/resource';
+import {IStore, Store} from '../../../src/core/store/store';
 
 const expect = chai.expect;
 const heroResource = new Resource("heroes", Hero);

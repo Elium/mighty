@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import {IRecord, Record} from '../../src/resource/record';
-import {IMap} from '../../src/utils/map';
+import {Record, IRecord} from '../../src/core/resource/record';
+import {IMap} from '../../src/core/utils/map';
 
 export interface IRank {
   id: number
