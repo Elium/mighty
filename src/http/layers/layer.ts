@@ -1,6 +1,6 @@
-import {IHttpRequest} from '../http.request';
-import {IHttpResponse} from '../http.response';
-import {Observable} from 'rxjs/Observable';
+import {IHttpRequest} from '../http.request'
+import {IHttpResponse} from '../http.response'
+import {Observable} from 'rxjs/Observable'
 
 export interface IDataLayer {
   create(request: IHttpRequest): Observable<IHttpResponse>;

@@ -1,7 +1,7 @@
 {
   "name": "@elium/mighty",
   "appName": "mighty",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "homepage": "https://github.com/Elium/mighty#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic TS & JS ORM",
@@ -17,30 +17,30 @@
     "test:watch": "npm run build && npm run mocha:watch",
     "preversion": "npm test",
     "postversion": "git push --follow-tags",
-    "deploy": "cp package.json LICENSE.md ./lib/ && npm publish --access=public"
+    "deploy": "cp package.json LICENSE.md ./lib/src && npm publish --access=public lib/src"
   },
   "repository": {
     "url": "git+https://github.com/Elium/mighty.git"
   },
   "main": "index.js",
   "devDependencies": {
-    "@types/chai": "^3.4.34",
-    "@types/core-js": "^0.9.35",
-    "@types/lodash": "^4.14.50",
-    "@types/mocha": "^2.2.38",
-    "@types/node": "^7.0.1",
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.12",
-    "del": "^2.2.1",
-    "hapi": "^16.1.0",
-    "istanbul": "^0.4.4",
-    "mocha": "^3.2.0",
-    "mocha-lcov-reporter": "^1.2.0",
-    "typescript": "^2.1.5"
+    "@types/chai": "~3.4.34",
+    "@types/lodash": "~4.14.62",
+    "@types/mocha": "~2.2.38",
+    "@types/node": "~7.0.12",
+    "@types/core-js": "0.9.35",
+    "chai": "~3.5.0",
+    "coveralls": "~2.11.12",
+    "del": "~2.2.1",
+    "hapi": "~16.1.0",
+    "istanbul": "~0.4.4",
+    "mocha": "~3.2.0",
+    "mocha-lcov-reporter": "~1.2.0",
+    "typescript": "~2.2.2"
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "rxjs": "^5.0.3"
+    "rxjs": "^5.1.0"
   },
   "bugs": {
     "url": "https://github.com/Elium/mighty/issues"

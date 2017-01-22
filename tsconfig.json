@@ -6,9 +6,21 @@
     "sourceMap": true,
     "declaration": true,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
     "target": "es5",
     "module": "commonjs",
-    "outDir": "lib"
+    "outDir": "lib",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "lodash",
+      "mocha",
+      "chai",
+      "core-js"
+    ]
   },
   "include": [
     "src/**/*.ts",
