@@ -1,7 +1,7 @@
 {
   "name": "@elium/mighty",
   "appName": "mighty",
-  "version": "4.2.2-rxjs.0",
+  "version": "5.0.0",
   "homepage": "https://github.com/Elium/mighty#readme",
   "author": "Arnaud Bosc <bosc.arno@gmail.com>",
   "description": "Context agnostic TS & JS ORM",
