@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
-import {Record, IRecord} from '../../src/core/resource/record';
-import {IMap} from '../../src/core/utils/map';
+import * as _ from 'lodash'
+import {Record, IRecord} from '../../src/core/resource/record'
+import {IMap} from '../../src/core/utils/map'
 
 export interface IRank {
   id: number
@@ -8,19 +8,19 @@ export interface IRank {
 }
 
 export class Rank extends Record implements IRank, IRecord {
-  id: number;
-  name: string;
-
+  id: number
+  name: string
+  
   toJSON(): Object {
     return {
       id: this.id,
       name: this.name
     }
   }
-
+  
   parseData(data: IMap<any>) {
-    this.id = data["id"] || null;
-    this.name = data["name"] || null;
+    this.id = data["id"] || null
+    this.name = data["name"] || null
   }
 }
 
@@ -38,5 +38,5 @@ export class RankData {
       id: 3,
       name: "emperor"
     }
-  ], rank => new Rank(rank));
+  ], rank => new Rank(rank))
 }
