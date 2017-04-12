@@ -1,4 +1,4 @@
-import {IMap} from '../utils/map';
+import {IMap} from '../utils/map'
 
 export interface IRecord {
   toJSON(): Object
@@ -11,11 +11,12 @@ export interface IRecordConstructor<R extends IRecord> {
 
 export abstract class Record implements IRecord {
   constructor(data?: IMap<any>) {
-    if(data) {
-      this.parseData(data);
+    if (data) {
+      this.parseData(data)
     }
   }
-
+  
   abstract toJSON();
+  
   abstract parseData(data: IMap<any>);
 }
